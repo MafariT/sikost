@@ -50,6 +50,16 @@ body {
     color: var(--royal) !important;
 }
 
+/* Untuk Link Active */
+.nav-link.active {
+    color: var(--royal) !important;
+}
+
+.nav-link.active::after {
+    width: 100%;
+}
+
+
 .nav-link::after {
     content: '';
     position: absolute;

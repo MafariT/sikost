@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,27 +14,28 @@
     <link rel="stylesheet" href="{{ asset('css/penyewa.css') }}">
 
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">KosKita</a>
+            <a class="navbar-brand" href="/beranda">SiKos</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="#home">Beranda</a>
+                        <a class="nav-link {{ Request::is('beranda') ? 'active' : '' }}" href="/beranda">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#features">Fitur</a>
+                        <a class="nav-link {{ Request::is('fitur') ? 'active' : '' }}" href="/fitur">Fitur</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#kos">Kos Populer</a>
+                        <a class="nav-link {{ Request::is('kos') ? 'active' : '' }}" href="/kos">Kos Populer</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#tentang">Tentang</a>
+                        <a class="nav-link {{ Request::is('tentang') ? 'active' : '' }}" href="/tentang">Tentang</a>
                     </li>
                     <li class="nav-item ms-3">
                         <button class="btn btn-primary-custom">Daftar Sekarang</button>
@@ -51,7 +53,8 @@
             <div class="row">
                 <div class="col-lg-4 mb-4 mb-lg-0">
                     <h5>KosKita</h5>
-                    <p style="opacity: 0.8;">Platform terpercaya untuk mahasiswa mencari hunian nyaman dan terjangkau di seluruh Indonesia.</p>
+                    <p style="opacity: 0.8;">Platform terpercaya untuk mahasiswa mencari hunian nyaman dan terjangkau di
+                        seluruh Indonesia.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
@@ -96,14 +99,16 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 KosKita. All rights reserved. Made with <i class="fas fa-heart" style="color: #ff6b6b;"></i> for Indonesian Students</p>
+                <p>&copy; 2025 KosKita. All rights reserved. Made with <i class="fas fa-heart"
+                        style="color: #ff6b6b;"></i> for Indonesian Students</p>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     {{-- JS Penyewa --}}
     <script src="{{ asset('js/penyewa.js') }}"></script>
 </body>
+
 </html>

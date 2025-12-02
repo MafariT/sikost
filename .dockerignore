@@ -1,0 +1,10 @@
+.git
+.env
+vendor
+node_modules
+storage/*.key
+public/storage
+tests
+docker-compose.yml
+Dockerfile
+README.md

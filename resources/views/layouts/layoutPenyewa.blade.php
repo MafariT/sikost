@@ -15,7 +15,7 @@
 
 </head>
 
-<body>
+<body class="py-8">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
@@ -45,7 +45,9 @@
         </div>
     </nav>
 
-    @yield('konten')
+    <main>
+        @yield('konten')
+    </main>
 
     <!-- Footer -->
     <footer class="footer">

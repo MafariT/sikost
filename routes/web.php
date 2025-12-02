@@ -59,6 +59,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/pembayaran', [PembayaranController::class, 'adminIndex'])->name('pembayaran.index');
         
         Route::post('/pelaporan/{id}/update', [PelaporanController::class, 'updateStatusAdmin'])->name('pelaporan.update');
+
+        Route::get('/kamar', [AdminKamarController::class, 'index'])->name('kamar.index');
+        Route::post('/kamar', [AdminKamarController::class, 'store'])->name('kamar.store');
+        Route::get('/kamar/{id}', [AdminKamarController::class, 'show'])->name('kamar.show');
+        Route::put('/kamar/{id}', [AdminKamarController::class, 'update'])->name('kamar.update');
+        Route::delete('/kamar/{id}', [AdminKamarController::class, 'destroy'])->name('kamar.destroy');
     });
     // --- PEMILIK ---
     Route::prefix('pemilik')->name('pemilik.')->group(function () {

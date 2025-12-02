@@ -7,20 +7,23 @@ use Illuminate\Http\Request;
 
 class KamarController extends Controller
 {
-    // GET /kamar
+    /**
+     * GET /kamar
+     * Melihat daftar kamar yang tersedia (Filter status='available').
+     */
     public function index()
     {
-        // ambil kamar yang tersedia saja
         $kamar = Kamar::where('status', 'tersedia')->get();
-
         return view('kamar.index', compact('kamar'));
     }
 
-    // GET /kamar/{id}
+    /**
+     * GET /kamar/{id}
+     * Mengambil detail kamar tertentu.
+     */
     public function show($id)
     {
-        $kamar = Kamar::where('id_kamar', $id)->firstOrFail();
-
+        $kamar = Kamar::findOrFail($id);
         return view('kamar.show', compact('kamar'));
     }
 }

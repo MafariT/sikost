@@ -9,7 +9,7 @@
         <div class="row align-items-center">
             <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
                 <span class="badge rounded-pill bg-light text-royal shadow-sm px-3 py-2 mb-3 border border-1">
-                    <i class="bi bi-stars text-warning me-1"></i> New Innovation 2025
+                    <i class="bi bi-stars text-warning me-1"></i> Testing
                 </span>
                 <h1 class="display-3 fw-bold mb-4" style="color: var(--color-midnight); line-height: 1.2;">
                     Masa Depan Bisnis <br> 

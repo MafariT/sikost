@@ -207,6 +207,7 @@ body {
 .btn-search:hover {
     background: var(--midnight);
     transform: scale(1.05);
+    color: white;
 }
 
 /* Features Section */

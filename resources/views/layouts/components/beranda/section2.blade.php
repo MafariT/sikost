@@ -1,7 +1,7 @@
 <section class="features-section" id="features">
     <div class="container">
         <div class="section-title">
-            <h2>Kenapa Pilih SiKos?</h2>
+            <h2>Kenapa Pilih SiKost?</h2>
             <p>Kemudahan dan kenyamanan dalam satu platform</p>
         </div>
         <div class="row g-4">

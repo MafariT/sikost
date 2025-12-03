@@ -6,7 +6,9 @@ use App\Http\Controllers\KamarController;
 use App\Http\Controllers\PelaporanController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\Penyewa\BerandaController;
-use App\Http\Controllers\Penyewa\ProfileController;
+use App\Http\Controllers\profil\ProfileController;
+use App\Http\Controllers\Admin\ProfileAdminController;
+use App\Http\Controllers\Penyewa\ProfileController as PenyewaProfileController;
 use App\Http\Controllers\Penyewa\RiwayatController;
 use App\Http\Controllers\Admin\KamarController as AdminKamarController;
 
@@ -37,6 +39,11 @@ Route::post('/midtrans/webhook', [PembayaranController::class, 'notificationHand
     })->name('dashboard');
 
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::middleware('auth')->group(function () {
+    Route::get('/profil', [ProfileController::class, 'index'])->name('profil.index');
+    Route::post('/profil', [ProfileController::class, 'update'])->name('profil.update');
+});
+
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
@@ -67,6 +74,16 @@ Route::post('/midtrans/webhook', [PembayaranController::class, 'notificationHand
         Route::put('/kamar/{id}', [AdminKamarController::class, 'update'])->name('kamar.update');
         Route::delete('/kamar/{id}', [AdminKamarController::class, 'destroy'])->name('kamar.destroy');
     });
+
+   Route::middleware(['auth', 'active', 'admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/profiles', [ProfileAdminController::class, 'index'])->name('profiles.index');
+        Route::get('/profiles/{id_profile}', [ProfileAdminController::class, 'show'])->name('profiles.show');
+        Route::post('/users/{userId}/toggle', [ProfileAdminController::class, 'toggleUser'])->name('users.toggle');
+    });
+
     // --- PEMILIK ---
     Route::prefix('pemilik')->name('pemilik.')->group(function () {
         Route::get('/pembayaran', [PembayaranController::class, 'pemilikIndex'])->name('pembayaran.index');

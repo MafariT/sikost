@@ -4,6 +4,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\RoleGate;
+use App\Http\Middleware\EnsureRoleAdmin;
+use App\Http\Middleware\EnsureUserIsActive;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,8 +17,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             '/midtrans/webhook',
         ]);
+
         $middleware->alias([
-            'role' => RoleGate::class,
+            'role'   => RoleGate::class,
+            'admin'  => EnsureRoleAdmin::class,
+            'active' => EnsureUserIsActive::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

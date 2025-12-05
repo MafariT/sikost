@@ -109,7 +109,11 @@
             @endif
             @if ($errors->any())
                 <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
-                    <strong>$errors</strong> Silakan cek kembali inputan Anda.
+                    <strong>  
+                        @foreach($errors->all() as $err)
+                            {{ $err }}
+                        @endforeach
+                    </strong> Silakan cek kembali inputan Anda
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
@@ -226,12 +230,15 @@
                                             @enderror
                                         </div>
 
-                                        <!-- Email (Read Only) -->
+                                        <!-- Email -->
                                         <div class="col-md-6">
                                             <label class="form-label text-muted small fw-bold">Email</label>
-                                            <input type="email" class="form-control form-control-lg"
-                                                value="{{ Auth::user()->email }}">
-                                            {{-- <small class="text-muted fst-italic">*Email tidak dapat diubah</small> --}}
+                                            <input type="email" name="email" 
+                                                class="form-control form-control-lg @error('email') is-invalid @enderror" 
+                                                value="{{ old('email', Auth::user()->email) }}">
+                                            @error('email') 
+                                                <div class="invalid-feedback">{{ $message }}</div> 
+                                            @enderror
                                         </div>
 
                                         <!-- No HP -->

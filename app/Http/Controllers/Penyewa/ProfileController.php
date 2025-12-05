@@ -45,6 +45,8 @@ class ProfileController extends Controller
         $profile = Profile::firstOrCreate(['user_id' => $user->id]);
 
         $validated = $request->validate([
+            'email'        => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$user->id],
+
             'nik'          => 'required|numeric|digits:16',
             'nama_lengkap' => 'required|string|max:255',
             'alamat'       => 'nullable|string',
@@ -55,6 +57,12 @@ class ProfileController extends Controller
             'foto_profile' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'foto_ktp'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
         ]);
+
+        if ($validated['email'] !== $user->email) {
+            $user->email = $validated['email'];
+            $user->save();
+        }
+
 
         if ($request->hasFile('foto_profile')) {
             if ($profile->foto_profile && Storage::disk('s3')->exists($profile->foto_profile)) {

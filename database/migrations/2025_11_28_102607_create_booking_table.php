@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('booking', function (Blueprint $table) {
             $table->id('id_booking');
             
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('kamar_id')->nullable()->constrained('kamar', 'id_kamar')->onDelete('set null');
+            $table->foreignId('profile_id')->constrained('profile', 'id_profile')->onDelete('cascade');
+            $table->foreignId('kamar_id')->constrained('kamar', 'id_kamar')->onDelete('set null');
             
             $table->string('status_booking')->default('pending');
             $table->unsignedBigInteger('total_harga');

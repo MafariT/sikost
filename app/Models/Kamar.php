@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Kamar extends Model
 {
@@ -17,6 +18,11 @@ class Kamar extends Model
         'foto_kamar',
         'deskripsi_kamar',
         'harga',
-        'status'
+        'status',
     ];
+
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class, 'kamar_id', 'id_kamar');
+    }
 }

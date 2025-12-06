@@ -157,78 +157,38 @@
 
 </style>
 
-{{-- Data Dummy untuk Contoh (Simulasikan data dari Controller) --}}
-@php
-$kos_list = [
-[
-'nama' => 'Kos Cendana Elite',
-'lokasi' => 'Sleman, Yogyakarta',
-'harga' => '1.8jt',
-'available' => true,
-'image' => 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600',
-],
-[
-'nama' => 'Pondok Hijau Syariah',
-'lokasi' => 'Depok, Sleman',
-'harga' => '950rb',
-'available' => false,
-'image' => 'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=600',
-],
-[
-'nama' => 'Griya Utama Putra',
-'lokasi' => 'Seturan, Yogyakarta',
-'harga' => '1.1jt',
-'available' => true,
-'image' => 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600',
-],
-[
-'nama' => 'The Cozy Inn',
-'lokasi' => 'Jakal KM 5',
-'harga' => '1.4jt',
-'available' => true,
-'image' => 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600',
-],
-[
-'nama' => 'Maharani Kost Putri',
-'lokasi' => 'Kota Gede',
-'harga' => '800rb',
-'available' => false,
-'image' => 'https://images.unsplash.com/photo-1513584684374-8bab748fbf90?q=80&w=1500',
-],
-];
-@endphp
-
 <section class="kamar-page-section">
-    {{-- Bagian Intro Halaman --}}
     <div class="page-intro">
         <h1>Temukan Kamar Kos Impianmu</h1>
-        <p>Jelajahi ribuan pilihan kamar kost terbaik, lengkap dengan fasilitas yang kamu butuhkan. Mulai dari AC
-            hingga kamar mandi dalam, semua ada di sini!</p>
+        <p>Jelajahi pilihan kamar kost terbaik dengan fasilitas lengkap.</p>
     </div>
+
     <div class="container">
-        {{-- Filter dan Search Section --}}
+        
         <div class="filter-container">
-            <form action="#" method="GET">
+            <form action="{{ route('kamar.index') }}" method="GET">
                 <div class="row g-3 align-items-end">
                     <div class="col-lg-5 col-md-4 col-sm-12">
-                        <label for="search" class="form-label fw-bold mb-1">Cari Nama Kos / Area</label>
-                        <input type="text" class="form-control" id="search" name="search"
-                            placeholder="Contoh: Kos Melati, Sleman">
+                        <label for="search" class="form-label fw-bold mb-1">Cari No Kamar / Info</label>
+                        <input type="text" class="form-control" id="search" name="search" 
+                               value="{{ request('search') }}"
+                               placeholder="Contoh: A-101">
                     </div>
 
                     <div class="col-lg-3 col-md-3 col-sm-6">
                         <label for="ketersediaan" class="form-label fw-bold mb-1">Ketersediaan</label>
                         <select class="form-select" id="ketersediaan" name="ketersediaan">
                             <option value="">Semua Status</option>
-                            <option value="available">Tersedia</option>
-                            <option value="unavailable">Tidak Tersedia</option>
+                            <option value="available" {{ request('ketersediaan') == 'available' ? 'selected' : '' }}>Tersedia</option>
+                            <option value="unavailable" {{ request('ketersediaan') == 'unavailable' ? 'selected' : '' }}>Tidak Tersedia</option>
                         </select>
                     </div>
 
                     <div class="col-lg-2 col-md-3 col-sm-6">
                         <label for="min_price" class="form-label fw-bold mb-1">Harga Min.</label>
-                        <input type="number" class="form-control" id="min_price" name="min_price"
-                            placeholder="Contoh: 800000">
+                        <input type="number" class="form-control" id="min_price" name="min_price" 
+                               value="{{ request('min_price') }}"
+                               placeholder="Rp">
                     </div>
 
                     <div class="col-lg-2 col-md-2 col-sm-12">
@@ -240,77 +200,73 @@ $kos_list = [
             </form>
         </div>
 
-        {{-- Daftar Kos (Menggunakan Struktur Card yang Sudah Diperbaiki) --}}
         <div class="row g-4">
-            {{-- Loop data kos dummy --}}
-            @foreach ($kos_list as $kos)
+            @forelse ($kamar as $item)
             <div class="col-lg-4 col-md-6">
                 <div class="kos-card">
                     <div class="kos-image">
-                        <img src="{{ $kos['image'] }}" alt="{{ $kos['nama'] }}">
+                        <img src="{{ Storage::disk('s3')->url($item->foto_kamar) }}" alt="Kamar {{ $item->no_kamar }}">
 
-                        {{-- Badge Ketersediaan --}}
-                        @if ($kos['available'])
+                        @if ($item->status == 'tersedia')
                         <span class="availability-badge badge-available">
                             <i class="fas fa-check-circle"></i> Tersedia
                         </span>
                         @else
                         <span class="availability-badge badge-unavailable">
-                            <i class="fas fa-times-circle"></i> Tidak Tersedia
+                            <i class="fas fa-times-circle"></i> Penuh
                         </span>
                         @endif
                     </div>
                     <div class="kos-content">
-                        <h3 class="kos-title">{{ $kos['nama'] }}</h3>
+                        <h3 class="kos-title">Kamar {{ $item->no_kamar }}</h3>
                         <p class="kos-location">
-                            <i class="fas fa-map-marker-alt"></i> {{ $kos['lokasi'] }}
+                            <i class="fas fa-map-marker-alt"></i> SiKost Area Utama
                         </p>
 
-                        {{-- Fasilitas yang Dibatasi --}}
+                        <p class="text-muted small mb-2">
+                            {{ Str::limit($item->deskripsi_kamar ?? 'Fasilitas lengkap, nyaman, dan aman.', 50) }}
+                        </p>
+
                         <div class="kos-facilities">
                             <span class="facility-item"><i class="fas fa-snowflake"></i> AC</span>
-                            <span class="facility-item"><i class="fas fa-shower"></i> KM Dalam</span>
                             <span class="facility-item"><i class="fas fa-wifi"></i> WiFi</span>
-                            <span class="facility-item"><i class="fas fa-utensils"></i> Dapur</span>
                         </div>
 
                         <div class="kos-price">
-                            Rp {{ $kos['harga'] }} <span>/ bulan</span>
+                            Rp {{ number_format($item->harga, 0, ',', '.') }} <span>/ tahun</span>
                         </div>
 
-                        {{-- Tombol Detail & Booking --}}
                         <div class="d-flex gap-2 mt-3">
-                            <a href="/kamar/1" class="btn-detail">
+                            <a href="{{ route('kamar.show', $item->id_kamar) }}" class="btn-detail">
                                 <i class="fa-solid fa-circle-info"></i> Detail
                             </a>
-                            @if ($kos['available'])
-                            <a href="#" class="btn-booking">
-                                <i class="fa-solid fa-calendar-check"></i> Booking
-                            </a>
+
+                            @if ($item->status == 'tersedia')
+                                <a href="{{ route('booking.index') }}?kamar_id={{ $item->id_kamar }}" class="btn-booking">
+                                    <i class="fa-solid fa-calendar-check"></i> Booking
+                                </a>
                             @else
-                            {{-- Jika tidak tersedia, tombol booking dinonaktifkan/berbeda --}}
-                            <button class="btn-booking bg-secondary border-secondary" disabled>
-                                <i class="fa-solid fa-calendar-times"></i> Penuh
-                            </button>
+                                <button class="btn-booking bg-secondary border-secondary" disabled>
+                                    <i class="fa-solid fa-calendar-times"></i> Penuh
+                                </button>
                             @endif
                         </div>
                     </div>
                 </div>
             </div>
-            @endforeach
+            @empty
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-warning">
+                    <i class="fas fa-search mb-2 display-6 d-block"></i>
+                    <h4>Tidak ada kamar ditemukan.</h4>
+                    <p>Coba ubah filter pencarian Anda.</p>
+                </div>
+            </div>
+            @endforelse
         </div>
 
-        {{-- Contoh Pagination (Optional) --}}
         <div class="d-flex justify-content-center mt-5">
-            <nav>
-                <ul class="pagination">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
+            {{ $kamar->links() }} 
         </div>
 
     </div>

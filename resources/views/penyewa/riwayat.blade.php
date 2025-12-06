@@ -65,6 +65,8 @@
             margin: 20px 0;
         }
 
+        /* ================================================ */
+
         .pagination-modern {
             gap: 5px;
         }
@@ -111,6 +113,150 @@
             padding-right: 15px !important;
             width: auto !important;
         }
+
+        /* ===================================== */
+
+        /* Container Utama Search Bar (Bentuk Pil) */
+        .search-pill {
+            background: #ffffff;
+            border-radius: 50px;
+            padding: 8px 25px;
+            /* Sedikit lebih compact tapi tetap lega */
+
+            /* FIX TENGGELAM: Shadow yang lebih kuat & posisi relative */
+            box-shadow: 0 10px 40px rgba(8, 31, 92, 0.1);
+            /* Menggunakan hint warna --midnight */
+            position: relative;
+            z-index: 10;
+            /* Agar selalu di atas elemen background/blob */
+
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            /* REQUEST OUTLINE: Border default menggunakan warna china (biru muda) */
+            border: 2px solid var(--porcelain);
+            transition: all 0.3s ease;
+        }
+
+        /* Efek Hover & Focus: Outline berubah jadi warna Royal (Biru Gelap) */
+        .search-pill:hover,
+        .search-pill:focus-within {
+            transform: translateY(-3px);
+            border-color: var(--royal);
+            /* Outline menyala */
+            box-shadow: 0 15px 45px rgba(51, 78, 172, 0.2);
+            /* Shadow lebih menyebar */
+        }
+
+        /* Ikon Search */
+        .search-icon {
+            color: var(--china);
+            /* Biru muda */
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        /* Saat input diketik, ikon jadi biru tua */
+        .search-pill:focus-within .search-icon {
+            color: var(--royal);
+        }
+
+        /* Input Field */
+        .search-input {
+            border: none;
+            outline: none;
+            box-shadow: none;
+            background: transparent;
+            width: 100%;
+            font-size: 1rem;
+            color: var(--midnight);
+            /* Teks biru sangat tua */
+            font-weight: 600;
+            /* Sedikit tebal agar tegas */
+        }
+
+        .search-input::placeholder {
+            color: #aeb9cc;
+            /* Abu-abu soft */
+            font-weight: 400;
+        }
+
+        .search-input:focus {
+            box-shadow: none;
+            background: transparent;
+        }
+
+        /* Garis Pemisah Vertikal */
+        .vertical-divider {
+            width: 2px;
+            height: 24px;
+            background-color: var(--porcelain);
+        }
+
+        /* Tombol Filter (Icon Only) */
+        .btn-filter-icon {
+            background: transparent;
+            border: none;
+            color: var(--midnight);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-filter-icon:hover {
+            background-color: var(--dawn);
+            /* Biru sangat muda saat hover */
+            color: var(--royal);
+        }
+
+        /* Indikator Filter Aktif (Titik Merah) */
+        .btn-filter-icon.active-filter::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 10px;
+            height: 10px;
+            background-color: #ff5b5b;
+            border: 2px solid #fff;
+            border-radius: 50%;
+        }
+
+        /* Dropdown Menu Custom */
+        .filter-dropdown-menu {
+            border: 1px solid var(--porcelain);
+            box-shadow: 0 10px 30px rgba(8, 31, 92, 0.15);
+            border-radius: 16px;
+            padding: 10px;
+            margin-top: 15px !important;
+            background-color: #fff;
+        }
+
+        .filter-dropdown-item {
+            border-radius: 10px;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--midnight);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .filter-dropdown-item:hover {
+            background-color: var(--dawn);
+            color: var(--royal);
+        }
+
+        .filter-dropdown-item.active {
+            background-color: var(--royal);
+            color: #fff !important;
+        }
     </style>
 
     <div class="page-offset">
@@ -128,6 +274,83 @@
 
                 {{-- SEARCH BAR & FILTER --}}
 
+                <div class="row justify-content-center mb-5">
+                    {{-- Menggunakan col-lg-9 agar sedikit lebih lebar tapi tetap manis --}}
+                    <div class="col-lg-9">
+
+                        <form action="{{ route('penyewa.riwayat') }}" method="GET" id="searchForm">
+
+                            {{-- Input Hidden untuk Filter --}}
+                            <input type="hidden" name="status" id="statusInput" value="{{ request('status', 'all') }}">
+
+                            <div class="search-pill">
+
+                                {{-- 1. Ikon Search --}}
+                                <i class="fas fa-search search-icon ms-2"></i>
+
+                                {{-- 2. Input Text --}}
+                                <input type="text" name="search" class="form-control search-input"
+                                    placeholder="Cari Invoice atau Nama Kamar..." value="{{ request('search') }}"
+                                    autocomplete="off">
+
+                                {{-- 3. Pembatas Vertikal --}}
+                                <div class="vertical-divider"></div>
+
+                                {{-- 4. Tombol Filter Icon --}}
+                                <div class="dropdown">
+                                    <button
+                                        class="btn-filter-icon {{ request('status') && request('status') != 'all' ? 'active-filter' : '' }} me-1"
+                                        type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                        title="Filter Status">
+                                        <i class="fas fa-sliders-h"></i>
+                                    </button>
+
+                                    {{-- Isi Dropdown --}}
+                                    <ul class="dropdown-menu dropdown-menu-end filter-dropdown-menu">
+                                        <li>
+                                            <h6 class="dropdown-header text-uppercase small fw-bold"
+                                                style="color: var(--china);">Filter Status</h6>
+                                        </li>
+
+                                        <li onclick="selectStatus('all')">
+                                            <a
+                                                class="dropdown-item filter-dropdown-item {{ request('status') == 'all' || !request('status') ? 'active' : '' }}">
+                                                Semua Status
+                                            </a>
+                                        </li>
+                                        <li onclick="selectStatus('menunggu_pelunasan')">
+                                            <a
+                                                class="dropdown-item filter-dropdown-item {{ request('status') == 'menunggu_pelunasan' ? 'active' : '' }}">
+                                                Menunggu Pelunasan
+                                            </a>
+                                        </li>
+                                        <li onclick="selectStatus('lunas')">
+                                            <a
+                                                class="dropdown-item filter-dropdown-item {{ request('status') == 'lunas' ? 'active' : '' }}">
+                                                Lunas
+                                            </a>
+                                        </li>
+                                        <li onclick="selectStatus('tidak_aktif')">
+                                            <a
+                                                class="dropdown-item filter-dropdown-item {{ request('status') == 'tidak_aktif' ? 'active' : '' }}">
+                                                Tidak Aktif
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+                <script>
+                    function selectStatus(statusValue) {
+                        document.getElementById('statusInput').value = statusValue;
+                        document.getElementById('searchForm').submit();
+                    }
+                </script>
 
                 {{-- CARD BOOKING --}}
 

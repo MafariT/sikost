@@ -126,14 +126,19 @@
 
             <div class="row justify-content-center">
 
+                {{-- SEARCH BAR & FILTER --}}
+
+
+                {{-- CARD BOOKING --}}
+
                 @forelse($bookings as $booking)
                     @php
-                        // Setup ID dan Class Dinamis
-                        $collapseId = 'collapseHistory-' . $booking['id'];
-                        $tableId = 'table-' . $booking['id'];
-                        $paginId = 'pagin-' . $booking['id'];
+                        // PERBAIKAN: Menggunakan tanda panah (->) untuk akses Object
+                        $collapseId = 'collapseHistory-' . $booking->id;
+                        $tableId = 'table-' . $booking->id;
+                        $paginId = 'pagin-' . $booking->id;
 
-                        $isInactive = $booking['status'] == 'tidak_aktif';
+                        $isInactive = $booking->status == 'tidak_aktif';
                         $cardClass = $isInactive ? 'card-disabled' : '';
                         $headerClass = $isInactive ? 'header-disabled' : '';
                     @endphp
@@ -141,12 +146,12 @@
                     <div class="col-lg-10 mb-5">
                         <div class="card card-booking {{ $cardClass }}">
 
-                            {{-- HEADER: Menggunakan Component Status --}}
+                            {{-- HEADER --}}
                             <div
                                 class="booking-header {{ $headerClass }} d-flex justify-content-between align-items-center">
-                                <x-badge-status :status="$booking['status']" />
+                                <x-badge-status :status="$booking->status" />
                                 <div class="fw-bold" style="color: var(--china); letter-spacing: 1px;">
-                                    {{ $booking['invoice'] }}
+                                    {{ $booking->invoice }}
                                 </div>
                             </div>
 
@@ -154,43 +159,47 @@
                             <div class="card-body p-4">
                                 <div class="row g-4">
                                     <div class="col-md-4">
-                                        <img src="{{ $booking['img'] }}" class="img-fluid rounded-3 mb-3 shadow-sm"
+                                        <img src="{{ $booking->img }}" class="img-fluid rounded-3 mb-3 shadow-sm"
                                             style="width: 100%; height: 180px; object-fit: cover;" alt="Kamar">
                                         <h5 class="fw-bold mb-1" style="color: var(--color-midnight);">
-                                            {{ $booking['kamar'] }}</h5>
+                                            {{ $booking->kamar }}
+                                        </h5>
                                         <p class="text-muted small mb-0"><i class="fas fa-map-marker-alt me-1"></i>
-                                            {{ $booking['kost'] }}</p>
+                                            {{ $booking->kost }}
+                                        </p>
                                     </div>
 
                                     <div class="col-md-5 border-start-md ps-md-4">
                                         <h6 class="text-uppercase text-muted small fw-bold mb-3">Rincian Sewa</h6>
                                         <div class="row mb-2">
                                             <div class="col-6"><small class="text-muted d-block">Check-in</small><span
-                                                    class="fw-bold text-dark">{{ $booking['check_in'] }}</span></div>
+                                                    class="fw-bold text-dark">{{ $booking->check_in }}</span></div>
                                             <div class="col-6"><small class="text-muted d-block">Durasi</small><span
-                                                    class="fw-bold text-dark">{{ $booking['durasi'] }}</span></div>
+                                                    class="fw-bold text-dark">{{ $booking->durasi }}</span></div>
                                             <div class="col-12 pt-2"><small
                                                     class="text-muted d-block">Check-Out</small><span
-                                                    class="fw-bold text-dark">{{ $booking['check_out'] }}</span></div>
+                                                    class="fw-bold text-dark">{{ $booking->check_out }}</span></div>
                                         </div>
                                         <div class="mt-2 pt-2 border-top border-light">
                                             <small class="text-muted d-block mb-1">Total Tagihan</small>
-                                            <h3 class="fw-bold text-dark mb-0">{{ $booking['total_tagihan'] }}</h3>
+                                            <h3 class="fw-bold text-dark mb-0">{{ $booking->total_tagihan }}</h3>
                                         </div>
                                     </div>
 
                                     <div class="col-md-3 text-md-end d-flex flex-column gap-3">
-                                        @if ($booking['status'] == 'menunggu_pelunasan')
-                                            <a href="#"
-                                                class="btn btn-outline-secondary btn-royal-glow rounded-pill w-100 py-2"><i
-                                                    class="fas fa-wallet me-2"></i> Bayar</a>
-                                        @elseif($booking['status'] == 'lunas')
+                                        @if ($booking->status == 'menunggu_pelunasan')
                                             <a href="#"
                                                 class="btn btn-outline-secondary btn-royal-glow rounded-pill w-100 py-2"><i
                                                     class="fas fa-wallet me-2"></i> Bayar</a>
                                             <a href="#" class="btn btn-danger rounded-pill w-100 py-2"><i
                                                     class="fa-solid fa-right-from-bracket"></i> Checkout</a>
-                                                       @else
+                                        @elseif($booking->status == 'lunas')
+                                            <a href="#"
+                                                class="btn btn-outline-secondary btn-royal-glow rounded-pill w-100 py-2"><i
+                                                    class="fas fa-wallet me-2"></i> Bayar</a>
+                                            <a href="#" class="btn btn-danger rounded-pill w-100 py-2"><i
+                                                    class="fa-solid fa-right-from-bracket"></i> Checkout</a>
+                                        @else
                                             <button disabled class="btn btn-secondary rounded-pill w-100 py-2"><i
                                                     class="fas fa-ban me-2"></i> Selesai</button>
                                         @endif
@@ -223,15 +232,17 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($booking['histori'] as $histori)
+                                                    {{-- PERBAIKAN: Loop Histori --}}
+                                                    @foreach ($booking->histori as $histori)
                                                         <tr>
-                                                            <td>{{ $histori['tgl'] }}</td>
-                                                            <td>{{ $histori['ket'] }}</td>
-                                                            <td>{{ $histori['metode'] }}</td>
-                                                            <td class="text-end fw-bold">{{ $histori['nom'] }}</td>
+                                                            {{-- Coba pakai panah (->) dulu untuk histori --}}
+                                                            <td>{{ $histori->tgl ?? $histori['tgl'] }}</td>
+                                                            <td>{{ $histori->ket ?? $histori['ket'] }}</td>
+                                                            <td>{{ $histori->metode ?? $histori['metode'] }}</td>
+                                                            <td class="text-end fw-bold">
+                                                                {{ $histori->nom ?? $histori['nom'] }}</td>
                                                             <td class="text-center">
-                                                                {{-- Component Status juga dipakai disini --}}
-                                                                <x-badge-status :status="$histori['stat']" />
+                                                                <x-badge-status :status="$histori->stat ?? $histori['stat']" />
                                                             </td>
                                                         </tr>
                                                     @endforeach
@@ -245,7 +256,7 @@
                                 </div>
                             </div>
 
-                            {{-- Script Pagination Per Kartu --}}
+                            {{-- Script Pagination --}}
                             <script>
                                 document.addEventListener("DOMContentLoaded", function() {
                                     if (typeof simplePagination === 'function') {

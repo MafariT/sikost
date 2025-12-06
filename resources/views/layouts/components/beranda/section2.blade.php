@@ -5,8 +5,8 @@
             <p>Kemudahan dan kenyamanan dalam satu platform</p>
         </div>
         <div class="row g-4">
-            <div class="col-lg-3 col-md-6">
-                <div class="feature-card">
+            <div class="col-lg-3 col-md-6" data-aos="fade-right">
+                <div class="feature-card" >
                     <div class="feature-icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>

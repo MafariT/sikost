@@ -7,7 +7,7 @@
     
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
+            <div class="col-lg-6 mb-5 mb-lg-0">
                 <span class="badge rounded-pill bg-light text-royal shadow-sm px-3 py-2 mb-3 border border-1">
                     <i class="bi bi-stars text-warning me-1"></i> Testing
                 </span>

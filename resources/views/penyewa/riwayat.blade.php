@@ -184,12 +184,11 @@
                                             <a href="#"
                                                 class="btn btn-outline-secondary btn-royal-glow rounded-pill w-100 py-2"><i
                                                     class="fas fa-wallet me-2"></i> Bayar</a>
-                                            <a href="#" class="btn btn-danger rounded-pill w-100 py-2"><i
-                                                    class="fa-solid fa-right-from-bracket"></i> Checkout</a>
                                         @elseif($booking['status'] == 'lunas')
-                                            <a href="#" class="btn btn-primary rounded-pill w-100 py-2"><i
-                                                    class="fas fa-redo me-2"></i> Perpanjang</a>
-                                            <a href="#" class="btn btn-outline-danger rounded-pill w-100 py-2"><i
+                                            <a href="#"
+                                                class="btn btn-outline-secondary btn-royal-glow rounded-pill w-100 py-2"><i
+                                                    class="fas fa-wallet me-2"></i> Bayar</a>
+                                            <a href="#" class="btn btn-danger rounded-pill w-100 py-2"><i
                                                     class="fa-solid fa-right-from-bracket"></i> Checkout</a>
                                         @else
                                             <button disabled class="btn btn-secondary rounded-pill w-100 py-2"><i

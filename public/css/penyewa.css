@@ -90,6 +90,7 @@ body {
     background: var(--midnight);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(8, 31, 92, 0.4);
+    color: white;
 }
 
 /* Hero Section */
@@ -556,5 +557,9 @@ body {
 
     .navbar-brand {
         font-size: 1.5rem;
+    }
+
+    .footer {
+        width: 100%;
     }
 }

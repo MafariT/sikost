@@ -23,12 +23,12 @@ class BookingController extends Controller
         $profile = Profile::where('user_id', $user->id)->first();
 
         if (!$profile) {
-            return redirect()->route('profile.index')
+            return redirect()->route('profil.index')
                 ->withErrors(['msg' => 'Anda harus melengkapi profil terlebih dahulu sebelum booking']);
         }
 
         if (empty($profile->nik) || empty($profile->foto_ktp) || empty($profile->no_hp)) {
-            return redirect()->route('profile.index')
+            return redirect()->route('profil.index')
                 ->withErrors(['msg' => 'Mohon lengkapi NIK, No HP, dan Foto KTP untuk verifikasi sewa']);
         }
 
@@ -120,7 +120,6 @@ class BookingController extends Controller
                 'pembayaran' => $pembayaran,
                 'booking' => $booking
             ]);
-
         } catch (\Exception $e) {
             return back()->with('error', 'Midtrans Error: ' . $e->getMessage());
         }
@@ -135,14 +134,14 @@ class BookingController extends Controller
         $user = Auth::user();
         $profile = Profile::where('user_id', $user->id)->first();
 
-        if(!$profile) {
+        if (!$profile) {
             return redirect()->route('profile.index');
         }
 
         $bookings = Booking::where('profile_id', $profile->id)
-                    ->with('kamar')
-                    ->orderBy('created_at', 'desc')
-                    ->get();
+            ->with('kamar')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('penyewa.booking.index', compact('bookings'));
     }

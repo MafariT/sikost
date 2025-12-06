@@ -29,24 +29,24 @@
             <ul class="navbar-nav ms-auto align-items-center">
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('beranda') ? 'active' : '' }}" href="/beranda">Beranda</a>
+                    <a class="nav-link {{ Request::is('beranda*') ? 'active' : '' }}" href="/beranda">Beranda</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('kamar') ? 'active' : '' }}" href="/kamar">Kamar</a>
+                    <a class="nav-link {{ Request::is('kamar*') ? 'active' : '' }}" href="/kamar">Kamar</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('riwayat') ? 'active' : '' }}" href="/riwayat">Riwayat</a>
+                    <a class="nav-link {{ Request::is('riwayat*') ? 'active' : '' }}" href="/riwayat">Riwayat</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('profil') ? 'active' : '' }}" href="/profil">Profil</a>
+                    <a class="nav-link {{ Request::is('profil*') ? 'active' : '' }}" href="/profil">Profil</a>
                 </li>
 
                 <!-- Logout Button -->
                 <li class="nav-item ms-3 d-none d-lg-block">
-                    <form action="">
+                    <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button class="btn btn-danger d-flex align-items-center gap-2">
                             <i class="fa-solid fa-right-from-bracket"></i> Keluar
@@ -58,7 +58,7 @@
             <!-- MOBILE LOGOUT -->
             <div class="d-lg-none w-100 mt-3">
                 <hr>
-                <form action="">
+                <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button class="btn btn-danger w-100 logout-btn">
                         <i class="fa-solid fa-right-from-bracket"></i>

@@ -126,6 +126,11 @@
 
             <div class="row justify-content-center">
 
+                {{-- SEARCH BAR & FILTER --}}
+
+
+                {{-- CARD BOOKING --}}
+
                 @forelse($bookings as $booking)
                     @php
                         // Setup ID dan Class Dinamis

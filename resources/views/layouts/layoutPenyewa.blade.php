@@ -18,7 +18,7 @@
 <body class="py-8">
     <!-- Navbar -->
     @include('layouts.components.navbar')
-    
+
     <main>
         @yield('konten')
     </main>
@@ -32,6 +32,14 @@
 
     {{-- JS Penyewa --}}
     <script src="{{ asset('js/penyewa.js') }}"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000, // Durasi animasi 1 detik
+            once: true, // Animasi hanya berjalan sekali saat scroll
+            offset: 100 // Offset trigger
+        });
+    </script>
 </body>
 
 </html>

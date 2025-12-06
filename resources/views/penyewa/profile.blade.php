@@ -153,7 +153,7 @@
                                 @endif
                             </div>
 
-                            <div class="nav flex-column nav-pills nav-pills-custom px-3" id="v-pills-tab" role="tablist"
+                            <div class="nav flex-column nav-pills nav-pills-custom px-3 gap-2" id="v-pills-tab" role="tablist"
                                 aria-orientation="vertical">
                                 <button class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill"
                                     data-bs-target="#v-pills-profile" type="button" role="tab">

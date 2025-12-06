@@ -69,8 +69,10 @@ Route::post('/midtrans/webhook', [PembayaranController::class, 'notificationHand
     });
     // --- PEMILIK ---
     Route::prefix('pemilik')->name('pemilik.')->group(function () {
+        Route::get('/beranda', function () {return view('pemilik.beranda');})->name('beranda');
         Route::get('/pembayaran', [PembayaranController::class, 'pemilikIndex'])->name('pembayaran.index');
     });
+
     // --- OB ---
     Route::prefix('ob')->name('ob.')->group(function () {
         Route::post('/pelaporan/{id}/update', [PelaporanController::class, 'updateStatusOB'])->name('pelaporan.update');

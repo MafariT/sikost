@@ -48,6 +48,11 @@ Route::get('/riwayat', [RiwayatController::class, 'index'])->name('penyewa.riway
 Route::get('/kamar', [KamarController::class, 'index'])->name('kamar.index');
 Route::get('/kamar/{id}', [KamarController::class, 'show'])->name('kamar.show');
 
+Route::get('/booking', [BookingController::class, 'index'])->name('booking.index');
+Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+Route::get('/booking/{id}', [BookingController::class, 'show'])->name('booking.show');
+Route::patch('/booking/{id}', [BookingController::class, 'update'])->name('booking.update');
+
 Route::get('/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran.index');
 Route::post('/pembayaran', [PembayaranController::class, 'store'])->name('pembayaran.store');
 
@@ -65,6 +70,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/kamar/{id}', [AdminKamarController::class, 'show'])->name('kamar.show');
     Route::put('/kamar/{id}', [AdminKamarController::class, 'update'])->name('kamar.update');
     Route::delete('/kamar/{id}', [AdminKamarController::class, 'destroy'])->name('kamar.destroy');
+
+    Route::get('/booking', [AdminBookingController::class, 'index'])->name('booking.index');
+    Route::get('/booking/{id}', [AdminBookingController::class, 'show'])->name('booking.show');
 });
 
 // --- PEMILIK ---

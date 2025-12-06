@@ -14,7 +14,6 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        // 'is_active', // opsional: boleh ditambah kalau mau mass-assign
     ];
 
     protected $hidden = [

@@ -46,4 +46,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Relasi: User bisa memiliki banyak Booking.
+     */
+    public function bookings()
+    {
+        // Parameter 2 ('user_id'): Kolom penghubung di tabel booking
+        // Parameter 3 ('id'): Kolom primary key di tabel users (User.php)
+        return $this->hasMany(Booking::class, 'user_id', 'id');
+    }
 }

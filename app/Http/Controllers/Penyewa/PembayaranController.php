@@ -99,10 +99,16 @@ class PembayaranController extends Controller
 
         $booking = $pembayaran->booking;
 
-        $isPaid = false;
         if ($transactionStatus == 'capture' || $transactionStatus == 'settlement') {
             $pembayaran->status = 'verified';
-            $isPaid = true;
+            if ($pembayaran->jenis_pembayaran == 'lunas_awal' || $pembayaran->jenis_pembayaran == 'pelunasan') {
+                $booking->update(['status_booking' => 'lunas']);
+            } else {
+                $booking->update(['status_booking' => 'dp_50']);
+            }
+            if ($booking->kamar) {
+                $booking->kamar->update(['status' => 'tidak tersedia']);
+            }
         } elseif ($transactionStatus == 'expire' || $transactionStatus == 'cancel' || $transactionStatus == 'deny') {
             $pembayaran->status = 'failed';
             $booking->update(['status_booking' => 'cancel']);
@@ -111,19 +117,9 @@ class PembayaranController extends Controller
         $pembayaran->metode_pembayaran = $paymentType;
         $pembayaran->save();
 
-        if ($isPaid) {
-            if (abs($pembayaran->total_pembayaran - $booking->total_harga) < 1000) {
-                $booking->update(['status_booking' => 'lunas']);
-            } else {
-                $booking->update(['status_booking' => 'dp_50']);
-            }
-            if ($booking->kamar) {
-                $booking->kamar->update(['status' => 'tidak tersedia']);
-            }
-        }
-
         return response(['message' => 'Status Updated']);
     }
+
     /**
      * GET /admin/pembayaran
      * Actor: Admin
@@ -153,5 +149,106 @@ class PembayaranController extends Controller
         $totalPendapatan = $pembayaran->sum('total_pembayaran');
 
         return view('pemilik.pembayaran.laporan', compact('pembayaran', 'totalPendapatan'));
+    }
+
+    /**
+     * GET /pembayaran/pay/{id_booking}
+     * Melanjutkan Pembayaran
+     */
+    public function paymentPage($id_booking)
+    {
+        $booking = Booking::with(['profile.user', 'kamar', 'pembayaran'])
+            ->where('id_booking', $id_booking)
+            ->firstOrFail();
+
+        if ($booking->profile->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $amountToPay = 0;
+        $paymentType = '';
+
+        if ($booking->status_booking == 'menunggu_pembayaran') {
+            $lastAttempt = $booking->pembayaran()
+                ->whereIn('jenis_pembayaran', ['dp_awal', 'lunas_awal'])
+                ->latest()
+                ->first();
+
+            $amountToPay = $lastAttempt ? $lastAttempt->total_pembayaran : $booking->total_harga;
+            $paymentType = $lastAttempt ? $lastAttempt->jenis_pembayaran : 'lunas_awal';
+
+        } elseif ($booking->status_booking == 'dp_50') {
+            $sudahDibayar = $booking->pembayaran()
+                ->where('status', 'verified')
+                ->sum('total_pembayaran');
+
+            $amountToPay = $booking->total_harga - $sudahDibayar;
+            $paymentType = 'pelunasan';
+
+            if ($amountToPay <= 0) {
+                return back()->with('success', 'Booking ini sudah lunas sepenuhnya.');
+            }
+
+        } else {
+            return back()->with('info', 'Status booking ini tidak memerlukan pembayaran.');
+        }
+
+        $stuckPayments = $booking->pembayaran()
+            ->where('status', 'pending')
+            ->get();
+
+        foreach ($stuckPayments as $stuck) {
+            $stuck->status = 'failed';
+            $stuck->save();
+        }
+
+        $pembayaran = new Pembayaran();
+        $pembayaran->booking_id = $booking->id_booking;
+        $pembayaran->total_pembayaran = $amountToPay;
+        $pembayaran->jenis_pembayaran = $paymentType;
+        $pembayaran->status = 'pending';
+        $pembayaran->metode_pembayaran = 'Midtrans';
+        $pembayaran->save();
+
+        $pembayaran->midtrans_code = 'PAY-' . $booking->id_booking . '-' . $pembayaran->id_pembayaran . '-' . time();
+        $pembayaran->save();
+
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+        Config::$isSanitized = config('midtrans.is_sanitized');
+        Config::$is3ds = config('midtrans.is_3ds');
+
+        $params = [
+            'transaction_details' => [
+                'order_id' => $pembayaran->midtrans_code,
+                'gross_amount' => (int) $pembayaran->total_pembayaran,
+            ],
+            'customer_details' => [
+                'first_name' => $booking->profile->nama_lengkap,
+                'email' => $booking->profile->user->email,
+                'phone' => $booking->profile->no_hp,
+            ],
+            'item_details' => [[
+                'id' => $booking->kamar_id,
+                'price' => (int) $pembayaran->total_pembayaran,
+                'quantity' => 1,
+                'name' => ($paymentType == 'pelunasan')
+                          ? "Pelunasan " . $booking->kamar->no_kamar
+                          : "Sewa " . $booking->kamar->no_kamar
+            ]]
+        ];
+
+        try {
+            $snapToken = Snap::getSnapToken($params);
+
+            return view('pembayaran.pay', [
+                'snapToken' => $snapToken,
+                'pembayaran' => $pembayaran,
+                'booking' => $booking
+            ]);
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Midtrans Error: ' . $e->getMessage());
+        }
     }
 }

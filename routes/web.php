@@ -26,7 +26,6 @@ Route::get('/', function () {
 // Midtrans Webhook
 Route::post('/midtrans/webhook', [PembayaranController::class, 'notificationHandler'])->name('midtrans.webhook');
 
-
 /*
 |--------------------------------------------------------------------------
 | Authenticated Routes
@@ -48,7 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/riwayat', [RiwayatController::class, 'index'])->name('penyewa.riwayat');
 
     Route::get('/kamar', [KamarController::class, 'index'])->name('kamar.index');
-    Route::get('/kamar/{id}', [KamarController::class, 'show'])->name('kamar.show');
+    Route::get('/kamar/{id}', [KamarController::class, 'show'])->name('kamar.show')->whereNumber('id');;
 
     Route::get('/kamar/booking/create/{kamar_id}', [BookingController::class, 'create'])->name('booking.create');
     Route::post('/kamar/booking', [BookingController::class, 'store'])->name('booking.store');
@@ -58,6 +57,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran.index');
     Route::post('/pembayaran', [PembayaranController::class, 'store'])->name('pembayaran.store');
+    // untuk lanjut bayar setelah dp
+    Route::get('/pembayaran/pay/{id_booking}', [PembayaranController::class, 'paymentPage'])->name('pembayaran.pay');
 
     Route::get('/beranda/pelaporan', [PelaporanController::class, 'index'])->name('pelaporan.index');
     Route::post('/beranda/pelaporan', [PelaporanController::class, 'store'])->name('pelaporan.store');

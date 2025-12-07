@@ -164,22 +164,37 @@ class BookingController extends Controller
 
     /**
      * PATCH /booking/{id}
-     * Cancel booking atau update manual (jika diperlukan)
+     * Handle Cancel or Checkout
      */
     public function update(Request $request, $id)
     {
-        $booking = Booking::findOrFail($id);
+        $booking = Booking::with('kamar')->findOrFail($id);
 
-        $userProfileId = Auth::user()->profile->id ?? 0;
+        $userProfileId = Auth::user()->profile->id_profile ?? 0;
         if ($booking->profile_id !== $userProfileId) {
-            abort(403);
+            abort(403, 'Unauthorized');
         }
 
-        if ($request->has('action') && $request->action == 'cancel') {
-            $booking->update(['status_booking' => 'cancel']);
-            return back()->with('success', 'Booking berhasil dibatalkan.');
+        if ($request->action == 'cancel') {
+            if ($booking->status_booking == 'menunggu_pembayaran') {
+                $booking->update(['status_booking' => 'cancel']);
+                return back()->with('success', 'Booking berhasil dibatalkan.');
+            }
         }
 
-        return back();
+        if ($request->action == 'checkout') {
+            if (in_array($booking->status_booking, ['lunas', 'dp_50'])) {
+
+                $booking->update(['status_booking' => 'selesai']);
+
+                if ($booking->kamar) {
+                    $booking->kamar->update(['status' => 'tersedia']);
+                }
+
+                return back()->with('success', 'Checkout berhasil. Terima kasih telah menyewa!');
+            }
+        }
+
+        return back()->with('error', 'Aksi tidak valid untuk status booking saat ini.');
     }
 }

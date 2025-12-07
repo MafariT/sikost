@@ -65,8 +65,8 @@ Route::middleware('auth')->group(function () {
     // END PENYEWA
 
     // --- ADMIN ---
-    Route::prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/pembayaran', [PembayaranController::class, 'adminIndex'])->name('pembayaran.index');
 
@@ -84,20 +84,13 @@ Route::middleware('auth')->group(function () {
     });
 
     // --- PEMILIK ---
-    Route::prefix('pemilik')->name('pemilik.')->group(function () {
+    Route::middleware(['role:pemilik'])->prefix('pemilik')->name('pemilik.')->group(function () {
         Route::get('/pembayaran', [PembayaranController::class, 'pemilikIndex'])->name('pembayaran.index');
     });
     // --- OB ---
-    Route::prefix('ob')->name('ob.')->group(function () {
+    Route::middleware(['role:ob'])->prefix('ob')->name('ob.')->group(function () {
         Route::post('/pelaporan/{id}/update', [PelaporanController::class, 'updateStatusOB'])->name('pelaporan.update');
     });
-
-    // ------------ ROUTE SENGAJA TIDAK DI BLOCK PER-ROLE SAAT DEVELOPMENT ------------
-    // ------------ JIKA SUDAH PRODUCTION GANTI DENGAN FUNCTION DIBAWAH ------------
-
-    // Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {});
-    // Route::middleware(['role:pemilik'])->prefix('pemilik')->name('pemilik.')->group(function () {});
-    // Route::middleware(['role:ob'])->prefix('ob')->name('ob.')->group(function () {});
 });
 
 require __DIR__ . '/auth.php';

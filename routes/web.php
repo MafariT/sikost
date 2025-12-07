@@ -9,6 +9,7 @@ use App\Http\Controllers\Penyewa\BerandaController;
 use App\Http\Controllers\Penyewa\RiwayatController;
 use App\Http\Controllers\Penyewa\ProfileController;
 use App\Http\Controllers\Admin\KamarController as AdminKamarController;
+use App\Http\Controllers\Admin\PelaporanAdminController;
 use App\Http\Controllers\Penyewa\KamarController;
 use App\Http\Controllers\Penyewa\BookingController;
 
@@ -68,7 +69,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/pembayaran', [PembayaranController::class, 'adminIndex'])->name('pembayaran.index');
 
-        Route::post('/pelaporan/{id}/update', [PelaporanController::class, 'updateStatusAdmin'])->name('pelaporan.update');
+        Route::get('/pelaporan', [PelaporanAdminController::class, 'index'])->name('pelaporan.admin');
+        Route::post('/pelaporan/{id}/update', [PelaporanAdminController::class, 'updateStatusAdmin'])->name('pelaporan.update');
 
         Route::get('/kamar', [AdminKamarController::class, 'index'])->name('kamar.index');
         Route::post('/kamar', [AdminKamarController::class, 'store'])->name('kamar.store');

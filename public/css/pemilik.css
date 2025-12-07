@@ -1,0 +1,489 @@
+/* 
+ * CSS Pemilik SiKos Owner
+ * Menggunakan variabel warna dari layout penyewa
+ * Author: System
+ */
+
+/* Import variabel warna dari penyewa */
+:root {
+    --royal: #334EAC;
+    --moon: #F7F2EB;
+    --china: #7096D1;
+    --asian-pear: #F2F0DE;
+    --midnight: #081F5C;
+    --dawn: #D0E3FF;
+    --jicama: #FFF9F0;
+    --porcelain: #EDF1F6;
+    --sky: #BAD6EB;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--midnight);
+    overflow-x: hidden;
+    background-color: var(--porcelain);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1.2rem 0;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--royal) !important;
+    letter-spacing: -0.5px;
+}
+
+.nav-link {
+    color: var(--midnight) !important;
+    font-weight: 500;
+    margin: 0 1rem;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--royal) !important;
+}
+
+.nav-link.active {
+    color: var(--royal) !important;
+    font-weight: 600;
+}
+
+.nav-link.active::after {
+    width: 100%;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--royal);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Logout Button */
+.btn-logout {
+    background: var(--royal);
+    color: white !important;
+    padding: 0.7rem 1.5rem;
+    border-radius: 50px;
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 4px 15px rgba(51, 78, 172, 0.3);
+}
+
+.btn-logout:hover {
+    background: var(--midnight);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(8, 31, 92, 0.4);
+    color: white !important;
+}
+
+/* Main Content */
+.container-fluid {
+    padding: 2rem 0;
+    background-color: var(--porcelain);
+    flex: 1;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Dashboard Content */
+.pemilik-dashboard {
+    padding: 2rem 0;
+}
+
+/* Color utilities dengan warna baru */
+.bg-primary-light { background-color: rgba(51, 78, 172, 0.08) !important; }
+.bg-success-light { background-color: rgba(25, 135, 84, 0.08) !important; }
+.bg-warning-light { background-color: rgba(255, 193, 7, 0.08) !important; }
+.bg-danger-light { background-color: rgba(220, 53, 69, 0.08) !important; }
+.bg-info-light { background-color: rgba(13, 202, 240, 0.08) !important; }
+.bg-secondary-light { background-color: rgba(112, 150, 209, 0.08) !important; }
+
+/* Card hover effects */
+.shadow-lg-hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+    transition: all 0.3s ease !important;
+    border-radius: 20px !important;
+    background: white;
+}
+
+.shadow-lg-hover:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12) !important;
+    transform: translateY(-4px) !important;
+}
+
+/* Card styling */
+.card {
+    border: none !important;
+    border-radius: 20px !important;
+    background: white;
+}
+
+.card.border-0.shadow-sm {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s ease;
+}
+
+.card.border-0.shadow-sm:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Table improvements */
+.table > :not(:first-child) {
+    border-top: 2px solid var(--porcelain) !important;
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--dawn) !important;
+}
+
+.table thead tr.bg-light {
+    background-color: var(--jicama) !important;
+}
+
+.table thead th {
+    font-weight: 600 !important;
+    color: var(--midnight) !important;
+    border-bottom: 2px solid var(--china) !important;
+    padding: 1rem 1.5rem;
+}
+
+.table tbody td {
+    padding: 1rem 1.5rem;
+    vertical-align: middle;
+}
+
+/* Badge styling */
+.badge {
+    font-weight: 500 !important;
+    padding: 0.35rem 1rem !important;
+    border-radius: 50px !important;
+}
+
+/* Progress bar */
+.progress {
+    border-radius: 10px !important;
+    background-color: var(--porcelain) !important;
+    height: 12px !important;
+}
+
+.progress-bar {
+    border-radius: 10px !important;
+    background-color: var(--royal) !important;
+}
+
+/* Modal styling */
+.modal-content {
+    border: none !important;
+    border-radius: 20px !important;
+}
+
+.modal-header {
+    border-top-left-radius: 20px !important;
+    border-top-right-radius: 20px !important;
+    border-bottom: none !important;
+    background-color: var(--royal);
+    color: white;
+}
+
+.modal-footer {
+    border-bottom-left-radius: 20px !important;
+    border-bottom-right-radius: 20px !important;
+    border-top: none !important;
+}
+
+/* Button styling */
+.btn-outline-primary, .btn-outline-success, .btn-outline-danger {
+    border-width: 2px !important;
+    border-radius: 10px !important;
+    padding: 0.5rem 1.5rem !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-outline-primary {
+    color: var(--royal) !important;
+    border-color: var(--royal) !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--royal) !important;
+    color: white !important;
+}
+
+.btn-outline-success {
+    color: #25a745 !important;
+    border-color: #25a745 !important;
+}
+
+.btn-outline-success:hover {
+    background-color: #25a745 !important;
+    color: white !important;
+}
+
+.btn-outline-danger {
+    color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.btn-secondary {
+    background-color: var(--china) !important;
+    border-color: var(--china) !important;
+    color: white !important;
+    border-radius: 10px !important;
+    padding: 0.5rem 1.5rem !important;
+    font-weight: 600 !important;
+}
+
+.btn-secondary:hover {
+    background-color: var(--royal) !important;
+    border-color: var(--royal) !important;
+}
+
+/* Section padding for anchor links */
+.pemilik-dashboard > div[id$="-section"] {
+    padding-top: 20px;
+    margin-top: -20px;
+    scroll-margin-top: 80px;
+}
+
+/* Dashboard text styling */
+.dashboard-title {
+    font-size: 2.8rem !important;
+    font-weight: 700 !important;
+    color: var(--midnight) !important;
+}
+
+.dashboard-subtitle {
+    font-size: 1.2rem !important;
+    color: var(--royal) !important;
+}
+
+/* Card header styling */
+.card-header.bg-white {
+    background-color: white !important;
+    border-bottom: 1px solid var(--porcelain) !important;
+}
+
+/* Alert styling */
+.alert {
+    border-radius: 10px !important;
+    border: none !important;
+}
+
+/* Footer Sederhana */
+.footer-simple {
+    background: var(--midnight);
+    color: white;
+    padding: 2rem 0;
+    margin-top: auto;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-brand h5 {
+    font-weight: 700;
+    color: var(--dawn);
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.footer-brand p {
+    opacity: 0.8;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.footer-copyright {
+    opacity: 0.6;
+    font-size: 0.9rem;
+}
+
+.footer-copyright p {
+    margin: 0;
+}
+
+/* Keluhan preview */
+.keluhan-preview {
+    max-width: 250px !important;
+}
+
+/* Text colors */
+.text-primary {
+    color: var(--royal) !important;
+}
+
+.text-success {
+    color: #25a745 !important;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.text-warning {
+    color: #ffc107 !important;
+}
+
+.text-muted {
+    color: var(--china) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem 0;
+    }
+    
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+    
+    .dashboard-title {
+        font-size: 2rem !important;
+    }
+    
+    .dashboard-subtitle {
+        font-size: 1rem !important;
+    }
+    
+    .container {
+        padding: 0 0.5rem;
+    }
+    
+    .table-responsive {
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        margin: 0 -0.5rem;
+    }
+    
+    .card-body {
+        padding: 1rem !important;
+    }
+    
+    .modal-dialog {
+        margin: 0.5rem !important;
+    }
+    
+    .btn-logout {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .footer-simple {
+        padding: 1.5rem 0;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .footer-brand h5 {
+        font-size: 1.1rem;
+    }
+    
+    .footer-brand p,
+    .footer-copyright {
+        font-size: 0.85rem;
+    }
+}
+
+/* Animation for cards */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+/* Custom utilities */
+.rounded-2 { border-radius: 12px !important; }
+.rounded-3 { border-radius: 20px !important; }
+
+/* Background colors for icons */
+.bg-primary-light {
+    background-color: rgba(51, 78, 172, 0.1) !important;
+}
+
+.bg-success-light {
+    background-color: rgba(37, 167, 69, 0.1) !important;
+}
+
+.bg-danger-light {
+    background-color: rgba(220, 53, 69, 0.1) !important;
+}
+
+/* Hover effects for summary cards */
+.shadow-lg-hover .bg-primary-light,
+.shadow-lg-hover .bg-success-light,
+.shadow-lg-hover .bg-danger-light {
+    transition: transform 0.3s ease;
+}
+
+.shadow-lg-hover:hover .bg-primary-light,
+.shadow-lg-hover:hover .bg-success-light,
+.shadow-lg-hover:hover .bg-danger-light {
+    transform: scale(1.05);
+}
+
+/* Focus states for accessibility */
+.btn:focus,
+.form-control:focus {
+    border-color: var(--royal);
+    box-shadow: 0 0 0 0.25rem rgba(51, 78, 172, 0.25);
+}

@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Pemilik\DashboardController as PemilikDashboardController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PelaporanController;
@@ -66,7 +67,7 @@ Route::middleware('auth')->group(function () {
 
     // --- ADMIN ---
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/pembayaran', [PembayaranController::class, 'adminIndex'])->name('pembayaran.index');
 
@@ -85,8 +86,10 @@ Route::middleware('auth')->group(function () {
 
     // --- PEMILIK ---
     Route::middleware(['role:pemilik'])->prefix('pemilik')->name('pemilik.')->group(function () {
+        Route::get('/dashboard', [PemilikDashboardController::class, 'index'])->name('dashboard');
         Route::get('/pembayaran', [PembayaranController::class, 'pemilikIndex'])->name('pembayaran.index');
     });
+
     // --- OB ---
     Route::middleware(['role:ob'])->prefix('ob')->name('ob.')->group(function () {
         Route::post('/pelaporan/{id}/update', [PelaporanController::class, 'updateStatusOB'])->name('pelaporan.update');

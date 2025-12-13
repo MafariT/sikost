@@ -17,8 +17,9 @@
     --text:#020617;
 }
 
-/* ===== BACKGROUND ===== */
+/* ================= BASE ================= */
 body{
+    margin:0;
     font-family:"Segoe UI",sans-serif;
     background:
         radial-gradient(circle at 15% 10%, var(--soft), transparent 35%),
@@ -27,7 +28,7 @@ body{
     min-height:100vh;
 }
 
-/* ===== SIDEBAR ===== */
+/* ================= SIDEBAR (DESKTOP) ================= */
 .sidebar{
     width:260px;
     height:100vh;
@@ -41,7 +42,6 @@ body{
 .sidebar-title{
     font-size:38px;
     font-weight:900;
-    letter-spacing:1px;
 }
 .sidebar-title::after{
     content:"";
@@ -53,71 +53,64 @@ body{
     border-radius:999px;
 }
 
-/* INFO PANEL */
+.sidebar-sub{
+    font-size:14px;
+    color:rgba(255,255,255,.7);
+    margin-top:6px;
+}
+
 .sidebar-info{
     margin-top:28px;
     background:rgba(255,255,255,0.08);
-    border:1px solid rgba(255,255,255,0.15);
     border-radius:18px;
     padding:18px;
     font-size:14px;
 }
-.sidebar-info strong{
-    display:block;
-    font-size:13px;
-    margin-bottom:4px;
-}
-.sidebar-info span{
-    color:rgba(255,255,255,0.75);
-}
 
-/* FOOTER */
 .sidebar-footer{
     position:absolute;
     bottom:30px;
     left:30px;
     right:30px;
 }
+
 .btn-logout{
     width:100%;
     background:rgba(255,255,255,0.08);
     border:1px solid rgba(255,255,255,0.25);
     color:#fff;
-    padding:14px 0;
+    padding:14px;
     border-radius:18px;
     font-weight:700;
-    font-size:16px;
-}
-.btn-logout:hover{
-    background:rgba(255,255,255,0.18);
-    color:#fff;
 }
 
-/* ===== CONTENT ===== */
+/* ================= CONTENT ================= */
 .content{
     margin-left:260px;
     padding:70px 90px;
     max-width:1600px;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 .page-header{
     display:flex;
     justify-content:space-between;
     align-items:flex-end;
     margin-bottom:40px;
 }
+
 .page-title{
     font-size:42px;
     font-weight:900;
     color:var(--dark);
 }
+
 .page-sub{
     font-size:15px;
     color:#64748b;
 }
 
-/* DETAIL CARD */
+/* ================= CARD ================= */
 .detail-card{
     background:linear-gradient(180deg,#ffffff,var(--light));
     border-radius:30px;
@@ -125,7 +118,6 @@ body{
     box-shadow:0 18px 40px rgba(0,0,0,.12);
 }
 
-/* INFO */
 .info-label{
     font-size:14px;
     color:#6b7280;
@@ -137,7 +129,7 @@ body{
     color:var(--text);
 }
 
-/* IMAGE */
+/* ================= IMAGE ================= */
 .img-preview{
     width:100%;
     max-height:420px;
@@ -147,7 +139,6 @@ body{
     cursor:pointer;
 }
 
-/* EMPTY IMAGE */
 .empty-image{
     height:260px;
     border-radius:26px;
@@ -165,8 +156,8 @@ body{
     font-weight:600;
 }
 
-/* FORM */
-.form-select, .form-control{
+/* ================= FORM ================= */
+.form-select,.form-control{
     border-radius:16px;
     font-size:16px;
 }
@@ -180,26 +171,110 @@ body{
     color:white;
 }
 
-/* RESPONSIVE */
-@media(max-width:991px){
+/* ===================================================
+   RESPONSIVE — SELARAS DENGAN LAPORAN.BLADE
+=================================================== */
+
+/* TABLET & MOBILE */
+@media(max-width:992px){
+
     .sidebar{
         width:100%;
         height:auto;
         position:relative;
-        text-align:center;
+        padding:24px 20px 18px;
+        border-bottom:1px solid rgba(255,255,255,0.12);
+        box-shadow:0 6px 18px rgba(0,0,0,.25);
     }
+
+    .sidebar-info{
+        display:none;
+    }
+
     .sidebar-footer{
         position:relative;
-        margin-top:30px;
+        margin-top:16px;
     }
+
     .content{
         margin-left:0;
-        padding:35px 22px;
+        padding:32px 18px 24px;
     }
+
+    .page-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+        margin-top:12px;
+        margin-bottom:28px;
+    }
+
     .page-title{
-        font-size:30px;
+        font-size:26px;
+        line-height:1.2;
     }
 }
+
+/* MOBILE KECIL */
+@media(max-width:576px){
+
+    .content{
+        padding:28px 16px 22px;
+    }
+
+    .detail-card{
+        padding:24px;
+        border-radius:22px;
+    }
+
+    .info-value{
+        font-size:17px;
+    }
+}
+
+/* EXTRA SMALL */
+@media(max-width:360px){
+
+    .page-title{
+        font-size:22px;
+    }
+
+    .info-value{
+        font-size:16px;
+    }
+}
+
+/* ===== MOBILE SIDEBAR FIX (FINAL & STABLE) ===== */
+@media (max-width: 992px) {
+
+    .sidebar {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 20px;
+        gap: 6px;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+        box-shadow: 0 6px 18px rgba(0,0,0,.25);
+    }
+
+    .sidebar-info {
+        display: none;
+    }
+
+    .sidebar-footer {
+        position: static;
+        padding-top: 10px;
+    }
+
+    .btn-logout {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+
 </style>
 </head>
 
@@ -207,24 +282,20 @@ body{
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-
     <div class="sidebar-title">🛠 Petugas</div>
-    <div class="text-white-50 mt-2" style="font-size:14px;">
-        Sistem Keluhan Kos
-    </div>
+    <div class="sidebar-sub">Sistem Keluhan Kos</div>
 
     <div class="sidebar-info">
         <strong>Peran</strong>
-        <span>Petugas Kos</span>
+        <div>Petugas Kos</div>
 
         <strong class="mt-3">Akses</strong>
-        <span>Monitoring & Penanganan Keluhan</span>
+        <div>Monitoring & Penanganan Keluhan</div>
     </div>
 
     <div class="sidebar-footer">
         <a href="#" class="btn btn-logout">🚪 Logout</a>
     </div>
-
 </aside>
 
 <!-- CONTENT -->
@@ -242,6 +313,7 @@ body{
 
     <div class="detail-card">
 
+        <!-- INFO -->
         <div class="row g-4 mb-4">
             <div class="col-md-6">
                 <div class="info-label">Judul Keluhan</div>
@@ -277,13 +349,12 @@ body{
             </div>
         </div>
 
+        <!-- FOTO -->
         <div class="row g-4 mb-4">
             <div class="col-md-6">
                 <div class="info-label mb-2">Foto Bukti</div>
                 @if($keluhan->foto_bukti)
-                    <img src="{{ asset('storage/'.$keluhan->foto_bukti) }}"
-                         class="img-preview"
-                         onclick="window.open(this.src)">
+                    <img src="{{ asset('storage/'.$keluhan->foto_bukti) }}" class="img-preview" onclick="window.open(this.src)">
                 @else
                     <div class="empty-image">Tidak ada foto bukti</div>
                 @endif
@@ -292,9 +363,7 @@ body{
             <div class="col-md-6">
                 <div class="info-label mb-2">Foto Setelah Perbaikan</div>
                 @if($keluhan->foto_after_perbaikan)
-                    <img src="{{ asset('storage/'.$keluhan->foto_after_perbaikan) }}"
-                         class="img-preview"
-                         onclick="window.open(this.src)">
+                    <img src="{{ asset('storage/'.$keluhan->foto_after_perbaikan) }}" class="img-preview" onclick="window.open(this.src)">
                 @else
                     <div class="empty-image">Belum ada foto</div>
                 @endif
@@ -303,6 +372,7 @@ body{
 
         <hr class="my-4">
 
+        <!-- FORM -->
         <form method="POST" enctype="multipart/form-data" class="d-flex flex-wrap gap-3">
             @csrf
             <select class="form-select w-auto">

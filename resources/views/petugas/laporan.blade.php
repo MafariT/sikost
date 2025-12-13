@@ -17,8 +17,11 @@
     --text:#020617;
 }
 
-/* ===== BACKGROUND ===== */
+/* =========================
+   BASE
+========================= */
 body{
+    margin:0;
     font-family:"Segoe UI",sans-serif;
     background:
         radial-gradient(circle at 15% 10%, var(--soft), transparent 35%),
@@ -27,11 +30,15 @@ body{
     min-height:100vh;
 }
 
-/* ===== SIDEBAR ===== */
+/* =========================
+   SIDEBAR (DESKTOP DEFAULT)
+========================= */
 .sidebar{
     width:260px;
     height:100vh;
     position:fixed;
+    top:0;
+    left:0;
     background:linear-gradient(180deg,var(--dark),#050e2d);
     padding:60px 30px;
     color:#fff;
@@ -51,6 +58,12 @@ body{
     display:block;
     margin-top:18px;
     border-radius:999px;
+}
+
+.sidebar-sub{
+    font-size:14px;
+    color:rgba(255,255,255,.7);
+    margin-top:8px;
 }
 
 /* INFO PANEL */
@@ -88,22 +101,16 @@ body{
     font-weight:700;
     font-size:16px;
 }
-.btn-logout:hover{
-    background:rgba(255,255,255,0.18);
-    color:#fff;
-}
 
-/* ===== CONTENT ===== */
+/* =========================
+   CONTENT
+========================= */
 .content{
     margin-left:260px;
     padding:70px 90px;
     max-width:1600px;
 }
 
-/* HEADER */
-.page-header{
-    margin-bottom:40px;
-}
 .page-title{
     font-size:42px;
     font-weight:900;
@@ -112,9 +119,12 @@ body{
 .page-sub{
     font-size:15px;
     color:#64748b;
+    margin-bottom:40px;
 }
 
-/* CARD */
+/* =========================
+   CARD
+========================= */
 .card-keluhan{
     background:linear-gradient(180deg,#ffffff,var(--light));
     border-radius:30px;
@@ -156,26 +166,133 @@ body{
     color:white;
 }
 
-/* RESPONSIVE */
-@media(max-width:991px){
+/* =========================
+   RESPONSIVE SYSTEM
+========================= */
+
+/* TABLET & SMALL LAPTOP */
+@media (max-width: 1200px){
+    .content{
+        padding:50px 40px;
+    }
+}
+
+/* TABLET MODE */
+@media (max-width: 992px){
+
     .sidebar{
         width:100%;
         height:auto;
         position:relative;
-        text-align:center;
+        padding:28px 24px;
     }
+
+    .sidebar-title{
+        font-size:28px;
+    }
+
+    .sidebar-title::after{
+        width:48px;
+        margin-top:10px;
+    }
+
+    .sidebar-info{
+        display:none;
+    }
+
     .sidebar-footer{
         position:relative;
-        margin-top:30px;
+        margin-top:18px;
+        left:auto;
+        right:auto;
+        bottom:auto;
     }
+
+    .btn-logout{
+        padding:10px 0;
+        font-size:14px;
+        border-radius:14px;
+    }
+
     .content{
         margin-left:0;
-        padding:35px 22px;
+        padding:28px 22px;
     }
+
     .page-title{
-        font-size:30px;
+        font-size:28px;
     }
 }
+
+/* MOBILE */
+@media (max-width: 576px){
+
+    .sidebar{
+        padding:18px 16px;
+    }
+
+    .sidebar-title{
+        font-size:24px;
+    }
+
+    .sidebar-title::after{
+        width:40px;
+        height:4px;
+    }
+
+    .content{
+        padding:20px 14px;
+    }
+
+    .page-title{
+        font-size:24px;
+    }
+
+    .card-keluhan{
+        padding:22px;
+        min-height:auto;
+        border-radius:22px;
+    }
+
+    .card-title{
+        font-size:18px;
+    }
+
+    .card-value{
+        font-size:17px;
+    }
+}
+
+/* SMALL MOBILE ≤360px */
+@media (max-width: 360px){
+
+    .sidebar{
+        padding:14px 12px;
+    }
+
+    .sidebar-title{
+        font-size:22px;
+    }
+
+    .page-title{
+        font-size:22px;
+    }
+
+    .btn-logout{
+        font-size:12px;
+        padding:7px 0;
+    }
+
+    .card-title{
+        font-size:16px;
+    }
+
+    .card-value{
+        font-size:16px;
+    }
+}
+
+
 </style>
 </head>
 
@@ -183,11 +300,8 @@ body{
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-
     <div class="sidebar-title">🛠 Petugas</div>
-    <div class="text-white-50 mt-2" style="font-size:14px;">
-        Sistem Keluhan Kos
-    </div>
+    <div class="sidebar-sub">Sistem Keluhan Kos</div>
 
     <div class="sidebar-info">
         <strong>Peran</strong>
@@ -200,17 +314,14 @@ body{
     <div class="sidebar-footer">
         <a href="#" class="btn btn-logout">🚪 Logout</a>
     </div>
-
 </aside>
 
 <!-- CONTENT -->
 <section class="content">
 
-    <div class="page-header">
-        <div class="page-title">Daftar Keluhan</div>
-        <div class="page-sub">
-            Keluhan yang masuk dan perlu ditindaklanjuti oleh petugas
-        </div>
+    <div class="page-title">Daftar Keluhan</div>
+    <div class="page-sub">
+        Keluhan yang masuk dan perlu ditindaklanjuti oleh petugas
     </div>
 
     <div class="row g-4">
@@ -237,8 +348,7 @@ body{
                 </div>
 
                 <div class="mt-auto pt-4">
-                    <a href="/petugas/keluhan/{{ $k->id }}"
-                       class="btn btn-detail w-100">
+                    <a href="/petugas/keluhan/{{ $k->id }}" class="btn btn-detail w-100">
                         Lihat Detail
                     </a>
                 </div>

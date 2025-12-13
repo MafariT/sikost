@@ -135,38 +135,11 @@
                             </div>
                         </div>
 
-                        <!-- Terms & Conditions -->
-                        <div class="form-check mb-4">
-                            <input class="form-check-input" type="checkbox" id="terms" required>
-                            <label class="form-check-label small" for="terms">
-                                Saya setuju dengan <a href="#" class="text-primary fw-semibold">Syarat & Ketentuan</a> dan <a href="#" class="text-primary fw-semibold">Kebijakan Privasi</a>
-                            </label>
-                        </div>
-
                         <!-- Submit Button -->
                         <div class="d-grid mb-3">
                             <button type="submit" class="btn btn-primary btn-lg btn-register">
                                 <i class="bi bi-person-check-fill me-2"></i>Daftar Sekarang
                             </button>
-                        </div>
-
-                        <!-- Divider -->
-                        <div class="divider">
-                            <span>atau daftar dengan</span>
-                        </div>
-
-                        <!-- Social Login -->
-                        <div class="row g-2 mb-4">
-                            <div class="col-6">
-                                <button type="button" class="btn btn-outline-secondary btn-social w-100">
-                                    <i class="bi bi-google me-2"></i>Google
-                                </button>
-                            </div>
-                            <div class="col-6">
-                                <button type="button" class="btn btn-outline-secondary btn-social w-100">
-                                    <i class="bi bi-facebook me-2"></i>Facebook
-                                </button>
-                            </div>
                         </div>
 
                         <!-- Login Link -->

@@ -13,17 +13,18 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
+
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/pemilik.css') }}">
@@ -239,13 +240,29 @@
         }
 
         /* Utility Classes */
-        .bg-primary-light { background-color: rgba(51, 78, 172, 0.08) !important; }
-        .bg-success-light { background-color: rgba(25, 135, 84, 0.08) !important; }
-        .bg-warning-light { background-color: rgba(255, 193, 7, 0.08) !important; }
-        .bg-danger-light { background-color: rgba(220, 53, 69, 0.08) !important; }
+        .bg-primary-light {
+            background-color: rgba(51, 78, 172, 0.08) !important;
+        }
 
-        .text-primary { color: var(--royal) !important; }
-        .text-midnight { color: var(--midnight) !important; }
+        .bg-success-light {
+            background-color: rgba(25, 135, 84, 0.08) !important;
+        }
+
+        .bg-warning-light {
+            background-color: rgba(255, 193, 7, 0.08) !important;
+        }
+
+        .bg-danger-light {
+            background-color: rgba(220, 53, 69, 0.08) !important;
+        }
+
+        .text-primary {
+            color: var(--royal) !important;
+        }
+
+        .text-midnight {
+            color: var(--midnight) !important;
+        }
 
         /* Animations */
         @keyframes fadeInUp {
@@ -253,6 +270,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -301,6 +319,7 @@
                 padding: 2rem 0 1rem;
             }
         }
+
     </style>
 
     @stack('styles')
@@ -311,43 +330,8 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
-                <i class="bi bi-houses-fill"></i>
-                <span>SiKos</span>
+                <img src="{{ asset('img/logo.png') }}" alt="Logo" style="height: 40px;">
             </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-lg-center">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/') }}">
-                            <i class="bi bi-house-door me-1"></i>Home
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/#features') }}">
-                            <i class="bi bi-stars me-1"></i>Fitur
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/#contact') }}">
-                            <i class="bi bi-chat-dots me-1"></i>Kontak
-                        </a>
-                    </li>
-                    <li class="nav-item ms-lg-3">
-                        <a class="btn btn-auth btn-login" href="{{ route('login') }}">
-                            <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
-                        </a>
-                    </li>
-                    <li class="nav-item ms-lg-2">
-                        <a class="btn btn-auth btn-register" href="{{ route('register') }}">
-                            <i class="bi bi-person-plus me-2"></i>Daftar
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
 
@@ -362,7 +346,7 @@
             <div class="footer-content">
                 <!-- About Section -->
                 <div class="footer-section">
-                    <h5><i class="bi bi-houses-fill me-2"></i>SiKos</h5>
+                    <h5> <img src="{{ asset('img/logo_admin.png') }}" alt="Logo" style="height: 40px;"></h5>
                     <p>Platform terpercaya untuk mencari dan menyewakan kos dengan mudah, aman, dan nyaman.</p>
                     <div class="footer-social">
                         <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a>
@@ -405,17 +389,18 @@
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; 2025 SiKos. All rights reserved. Made with <i class="bi bi-heart-fill text-danger"></i> in Indonesia</p>
+                <p>&copy; 2025 SiKos. All rights reserved. Made with <i class="bi bi-heart-fill text-danger"></i> in
+                    Indonesia</p>
             </div>
         </div>
     </footer>
 
     <!-- Bootstrap Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- AOS Animation JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
+
     <!-- Initialize AOS -->
     <script>
         AOS.init({
@@ -426,7 +411,7 @@
         });
 
         // Navbar scroll effect
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             const navbar = document.querySelector('.navbar');
             if (window.scrollY > 50) {
                 navbar.style.boxShadow = '0 4px 40px rgba(0, 0, 0, 0.12)';
@@ -448,6 +433,7 @@
                 }
             });
         });
+
     </script>
 
     @stack('scripts')

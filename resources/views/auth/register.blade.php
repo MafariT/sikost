@@ -1,4 +1,4 @@
-@extends('auth.layouts.mainLayoutAuth')
+@extends('auth.layouts.main-layout-auth')
 
 @section('content')
 <div class="register-container">
@@ -12,7 +12,7 @@
                     </div>
                     <h1 class="display-4 fw-bold text-midnight mb-3">Temukan Kos Impianmu</h1>
                     <p class="lead text-muted mb-4">Bergabunglah dengan ribuan pencari kos yang sudah menemukan hunian nyaman mereka</p>
-                    
+
                     <div class="features-list">
                         <div class="feature-item" data-aos="fade-up" data-aos-delay="100">
                             <div class="feature-icon bg-primary-light">
@@ -23,7 +23,7 @@
                                 <p class="text-muted small mb-0">Temukan kos sesuai budget dan lokasi favoritmu</p>
                             </div>
                         </div>
-                        
+
                         <div class="feature-item" data-aos="fade-up" data-aos-delay="200">
                             <div class="feature-icon bg-success-light">
                                 <i class="bi bi-shield-check text-success"></i>
@@ -33,7 +33,7 @@
                                 <p class="text-muted small mb-0">Semua listing terverifikasi dan terjamin keamanannya</p>
                             </div>
                         </div>
-                        
+
                         <div class="feature-item" data-aos="fade-up" data-aos-delay="300">
                             <div class="feature-icon bg-warning-light">
                                 <i class="bi bi-star-fill text-warning"></i>
@@ -75,13 +75,13 @@
                                 <i class="bi bi-envelope-fill me-2 text-primary"></i>Email
                             </label>
                             <div class="input-group">
-                                <input id="email" 
-                                       type="email" 
-                                       name="email" 
-                                       class="form-control form-control-lg @error('email') is-invalid @enderror" 
-                                       value="{{ old('email') }}" 
+                                <input id="email"
+                                       type="email"
+                                       name="email"
+                                       class="form-control form-control-lg @error('email') is-invalid @enderror"
+                                       value="{{ old('email') }}"
                                        placeholder="nama@email.com"
-                                       required 
+                                       required
                                        autofocus>
                                 @error('email')
                                     <div class="invalid-feedback">
@@ -97,10 +97,10 @@
                                 <i class="bi bi-lock-fill me-2 text-primary"></i>Password
                             </label>
                             <div class="input-group">
-                                <input id="password" 
-                                       type="password" 
-                                       name="password" 
-                                       class="form-control form-control-lg @error('password') is-invalid @enderror" 
+                                <input id="password"
+                                       type="password"
+                                       name="password"
+                                       class="form-control form-control-lg @error('password') is-invalid @enderror"
                                        placeholder="Minimal 8 karakter"
                                        required>
                                 <button class="btn btn-outline-secondary toggle-password" type="button">
@@ -123,10 +123,10 @@
                                 <i class="bi bi-lock-fill me-2 text-primary"></i>Konfirmasi Password
                             </label>
                             <div class="input-group">
-                                <input id="password_confirmation" 
-                                       type="password" 
-                                       name="password_confirmation" 
-                                       class="form-control form-control-lg" 
+                                <input id="password_confirmation"
+                                       type="password"
+                                       name="password_confirmation"
+                                       class="form-control form-control-lg"
                                        placeholder="Ulangi password"
                                        required>
                                 <button class="btn btn-outline-secondary toggle-password" type="button">
@@ -145,7 +145,7 @@
                         <!-- Login Link -->
                         <div class="text-center">
                             <p class="text-muted mb-0">
-                                Sudah punya akun? 
+                                Sudah punya akun?
                                 <a href="{{ route('login') }}" class="text-primary fw-bold text-decoration-none">
                                     Login di sini <i class="bi bi-arrow-right ms-1"></i>
                                 </a>
@@ -358,7 +358,7 @@
     .register-card {
         padding: 2rem 1.5rem;
     }
-    
+
     .register-container {
         padding: 1rem 0;
     }
@@ -369,24 +369,24 @@
         padding: 1.5rem 1rem;
         border-radius: 20px;
     }
-    
+
     .register-icon {
         width: 60px;
         height: 60px;
     }
-    
+
     .register-icon i {
         font-size: 1.5rem;
     }
-    
+
     h2 {
         font-size: 1.5rem;
     }
-    
+
     .form-control-lg {
         padding: 0.75rem 1rem;
     }
-    
+
     .btn-social {
         font-size: 0.875rem;
         padding: 0.625rem;
@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const input = this.parentElement.querySelector('input');
             const icon = this.querySelector('i');
-            
+
             if (input.type === 'password') {
                 input.type = 'text';
                 icon.classList.remove('bi-eye-fill');
@@ -413,12 +413,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
     // Form Validation Enhancement
     const form = document.querySelector('.register-form');
     const passwordInput = document.getElementById('password');
     const confirmPasswordInput = document.getElementById('password_confirmation');
-    
+
     confirmPasswordInput.addEventListener('input', function() {
         if (this.value !== passwordInput.value) {
             this.setCustomValidity('Password tidak cocok');
@@ -426,13 +426,13 @@ document.addEventListener('DOMContentLoaded', function() {
             this.setCustomValidity('');
         }
     });
-    
+
     // Add focus animation
     document.querySelectorAll('.form-control').forEach(input => {
         input.addEventListener('focus', function() {
             this.parentElement.classList.add('focused');
         });
-        
+
         input.addEventListener('blur', function() {
             this.parentElement.classList.remove('focused');
         });

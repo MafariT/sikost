@@ -1,4 +1,4 @@
-@extends('auth.layouts.mainLayoutAuth')
+@extends('auth.layouts.main-layout-auth')
 
 @section('content')
 <div class="login-container">

@@ -1,4 +1,4 @@
-@extends('auth.layouts.mainLayoutAuth')
+@extends('auth.layouts.main-layout-auth')
 
 @section('content')
 <div class="forgot-password-container">
@@ -17,10 +17,10 @@
                             <div class="float-icon icon-3"><i class="bi bi-arrow-clockwise"></i></div>
                         </div>
                     </div>
-                    
+
                     <h1 class="display-4 fw-bold text-midnight mb-3 mt-5">Jangan Khawatir!</h1>
                     <p class="lead text-muted mb-4">Kami siap membantu Anda mendapatkan kembali akses ke akun</p>
-                    
+
                     <div class="steps-container">
                         <h5 class="fw-bold text-midnight mb-3">Cara Reset Password:</h5>
                         <div class="step-item" data-aos="fade-up" data-aos-delay="100">
@@ -30,7 +30,7 @@
                                 <p class="text-muted small mb-0">Ketik email yang terdaftar di akun Anda</p>
                             </div>
                         </div>
-                        
+
                         <div class="step-item" data-aos="fade-up" data-aos-delay="200">
                             <div class="step-number">2</div>
                             <div class="step-content">
@@ -38,7 +38,7 @@
                                 <p class="text-muted small mb-0">Kami akan mengirim link reset password</p>
                             </div>
                         </div>
-                        
+
                         <div class="step-item" data-aos="fade-up" data-aos-delay="300">
                             <div class="step-number">3</div>
                             <div class="step-content">
@@ -102,13 +102,13 @@
                                 <i class="bi bi-envelope-fill me-2 text-primary"></i>Email Terdaftar
                             </label>
                             <div class="input-wrapper">
-                                <input id="email" 
-                                       type="email" 
-                                       name="email" 
-                                       class="form-control form-control-lg @error('email') is-invalid @enderror" 
-                                       value="{{ old('email') }}" 
+                                <input id="email"
+                                       type="email"
+                                       name="email"
+                                       class="form-control form-control-lg @error('email') is-invalid @enderror"
+                                       value="{{ old('email') }}"
                                        placeholder="nama@email.com"
-                                       required 
+                                       required
                                        autofocus>
                                 <div class="input-icon">
                                     <i class="bi bi-at"></i>
@@ -540,7 +540,7 @@
     .forgot-card {
         padding: 2rem 1.5rem;
     }
-    
+
     .forgot-password-container {
         padding: 1rem 0;
     }
@@ -551,43 +551,43 @@
         padding: 1.5rem 1rem;
         border-radius: 20px;
     }
-    
+
     .forgot-icon {
         width: 60px;
         height: 60px;
     }
-    
+
     .forgot-icon i {
         font-size: 1.5rem;
     }
-    
+
     h2 {
         font-size: 1.5rem;
     }
-    
+
     .form-control-lg {
         padding: 0.75rem 2.5rem 0.75rem 1rem;
     }
-    
+
     .action-card {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .action-icon {
         margin: 0 auto;
     }
-    
+
     .illustration-wrapper {
         width: 150px;
         height: 150px;
     }
-    
+
     .icon-circle {
         width: 150px;
         height: 150px;
     }
-    
+
     .icon-circle i {
         font-size: 3.5rem;
     }
@@ -598,12 +598,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Add focus animation
     const emailInput = document.getElementById('email');
-    
+
     if (emailInput) {
         emailInput.addEventListener('focus', function() {
             this.parentElement.classList.add('focused');
         });
-        
+
         emailInput.addEventListener('blur', function() {
             this.parentElement.classList.remove('focused');
         });
@@ -614,7 +614,7 @@ document.addEventListener('DOMContentLoaded', function() {
     alerts.forEach(alert => {
         const isSuccess = alert.classList.contains('alert-success');
         const timeout = isSuccess ? 8000 : 5000;
-        
+
         setTimeout(() => {
             const bsAlert = new bootstrap.Alert(alert);
             bsAlert.close();
@@ -624,7 +624,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form submission loading state
     const form = document.querySelector('.forgot-form');
     const submitBtn = form.querySelector('.btn-reset');
-    
+
     form.addEventListener('submit', function() {
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Mengirim...';

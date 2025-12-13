@@ -1,4 +1,4 @@
-@extends('auth.layouts.mainLayoutAuth')
+@extends('auth.layouts.main-layout-auth')
 
 @section('content')
 <div class="reset-password-container">
@@ -22,15 +22,15 @@
                             <div class="ring ring-3"></div>
                         </div>
                     </div>
-                    
+
                     <h1 class="display-4 fw-bold text-midnight mb-3 mt-5">Buat Password Baru</h1>
                     <p class="lead text-muted mb-4">Pastikan password baru Anda kuat dan aman untuk melindungi akun</p>
-                    
+
                     <div class="tips-container">
                         <h5 class="fw-bold text-midnight mb-3">
                             <i class="bi bi-lightbulb-fill text-warning me-2"></i>Tips Password Kuat:
                         </h5>
-                        
+
                         <div class="tip-item" data-aos="fade-up" data-aos-delay="100">
                             <div class="tip-icon bg-primary-light">
                                 <i class="bi bi-type text-primary"></i>
@@ -40,7 +40,7 @@
                                 <p class="text-muted small mb-0">Gunakan kombinasi huruf besar, kecil, angka & simbol</p>
                             </div>
                         </div>
-                        
+
                         <div class="tip-item" data-aos="fade-up" data-aos-delay="200">
                             <div class="tip-icon bg-success-light">
                                 <i class="bi bi-ban text-success"></i>
@@ -50,7 +50,7 @@
                                 <p class="text-muted small mb-0">Jangan gunakan nama, tanggal lahir, atau info mudah ditebak</p>
                             </div>
                         </div>
-                        
+
                         <div class="tip-item" data-aos="fade-up" data-aos-delay="300">
                             <div class="tip-icon bg-warning-light">
                                 <i class="bi bi-arrow-repeat text-warning"></i>
@@ -102,12 +102,12 @@
                                 <i class="bi bi-envelope-fill me-2 text-primary"></i>Email
                             </label>
                             <div class="input-wrapper">
-                                <input id="email" 
-                                       type="email" 
-                                       name="email" 
-                                       class="form-control form-control-lg @error('email') is-invalid @enderror" 
-                                       value="" 
-                                       required 
+                                <input id="email"
+                                       type="email"
+                                       name="email"
+                                       class="form-control form-control-lg @error('email') is-invalid @enderror"
+                                       value=""
+                                       required
                                        readonly>
                                 <div class="input-icon">
                                     <i class="bi bi-lock-fill"></i>
@@ -129,10 +129,10 @@
                                 <i class="bi bi-key-fill me-2 text-primary"></i>Password Baru
                             </label>
                             <div class="input-wrapper">
-                                <input id="password" 
-                                       type="password" 
-                                       name="password" 
-                                       class="form-control form-control-lg @error('password') is-invalid @enderror" 
+                                <input id="password"
+                                       type="password"
+                                       name="password"
+                                       class="form-control form-control-lg @error('password') is-invalid @enderror"
                                        placeholder="Minimal 8 karakter"
                                        required>
                                 <button class="password-toggle" type="button" data-target="password">
@@ -144,7 +144,7 @@
                                     </div>
                                 @enderror
                             </div>
-                            
+
                             <!-- Password Strength Meter -->
                             <div class="password-strength mt-2">
                                 <div class="strength-bar">
@@ -160,10 +160,10 @@
                                 <i class="bi bi-check-circle-fill me-2 text-primary"></i>Konfirmasi Password Baru
                             </label>
                             <div class="input-wrapper">
-                                <input id="password_confirmation" 
-                                       type="password" 
-                                       name="password_confirmation" 
-                                       class="form-control form-control-lg" 
+                                <input id="password_confirmation"
+                                       type="password"
+                                       name="password_confirmation"
+                                       class="form-control form-control-lg"
                                        placeholder="Ketik ulang password baru"
                                        required>
                                 <button class="password-toggle" type="button" data-target="password_confirmation">
@@ -219,7 +219,7 @@
                                 <span>Kembali ke Login</span>
                                 <i class="bi bi-arrow-right ms-auto"></i>
                             </a>
-                            
+
                             <a href="{{ route('register') }}" class="action-link link-success">
                                 <i class="bi bi-person-plus me-2"></i>
                                 <span>Belum punya akun? Daftar</span>
@@ -704,43 +704,43 @@
         padding: 1.5rem 1rem;
         border-radius: 20px;
     }
-    
+
     .reset-icon {
         width: 60px;
         height: 60px;
     }
-    
+
     .reset-icon i {
         font-size: 1.5rem;
     }
-    
+
     h2 {
         font-size: 1.5rem;
     }
-    
+
     .form-control-lg {
         padding: 0.75rem 2.5rem 0.75rem 1rem;
     }
-    
+
     .illustration-wrapper {
         width: 180px;
         height: 180px;
     }
-    
+
     .shield-bg {
         width: 150px;
         height: 150px;
     }
-    
+
     .shield-bg i {
         font-size: 3.5rem;
     }
-    
+
     .check-mark {
         width: 50px;
         height: 50px;
     }
-    
+
     .check-mark i {
         font-size: 1.5rem;
     }
@@ -753,7 +753,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const confirmInput = document.getElementById('password_confirmation');
     const strengthBar = document.getElementById('strengthBar');
     const strengthText = document.getElementById('strengthText');
-    
+
     // Password Requirements
     const requirements = {
         length: document.getElementById('req-length'),
@@ -768,7 +768,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetId = this.getAttribute('data-target');
             const input = document.getElementById(targetId);
             const icon = this.querySelector('i');
-            
+
             if (input.type === 'password') {
                 input.type = 'text';
                 icon.classList.remove('bi-eye-fill');
@@ -784,28 +784,28 @@ document.addEventListener('DOMContentLoaded', function() {
     // Password Strength Checker
     function checkPasswordStrength(password) {
         let strength = 0;
-        
+
         // Check requirements
         const hasLength = password.length >= 8;
         const hasUppercase = /[A-Z]/.test(password);
         const hasLowercase = /[a-z]/.test(password);
         const hasNumber = /[0-9]/.test(password);
-        
+
         // Update requirement indicators
         requirements.length.classList.toggle('valid', hasLength);
         requirements.uppercase.classList.toggle('valid', hasUppercase);
         requirements.lowercase.classList.toggle('valid', hasLowercase);
         requirements.number.classList.toggle('valid', hasNumber);
-        
+
         // Calculate strength
         if (hasLength) strength++;
         if (hasUppercase) strength++;
         if (hasLowercase) strength++;
         if (hasNumber) strength++;
-        
+
         // Update strength bar
         strengthBar.classList.remove('weak', 'medium', 'strong');
-        
+
         if (password.length === 0) {
             strengthBar.style.width = '0';
             strengthText.textContent = 'Kekuatan password';
@@ -842,7 +842,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form submission
     const form = document.querySelector('.reset-form');
     const submitBtn = form.querySelector('.btn-reset');
-    
+
     form.addEventListener('submit', function(e) {
         // Check if passwords match
         if (confirmInput.value !== passwordInput.value) {
@@ -850,7 +850,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Password dan konfirmasi password tidak cocok!');
             return;
         }
-        
+
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
     });

@@ -15,7 +15,7 @@
 
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
-        <img src="{{ asset('img/logo.png') }}" alt="Logo" style="height: 40px;">
+        <img src="{{ asset('img/logo_admin.png') }}" alt="Logo" style="height: 50px;" id="sidebarLogo">
     </div>
 
     <ul class="sidebar-nav">
@@ -50,3 +50,9 @@
         </form>
     </div>
 </aside>
+
+<script>
+    // Definisikan path gambar menggunakan helper Blade di dalam file Blade
+    const FULL_LOGO_PATH = '{{ asset('img/logo_admin.png') }}';
+    const COLLAPSED_LOGO_PATH = '{{ asset('img/logo_admin_saja.png') }}';
+</script>

@@ -4,62 +4,48 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Pelaporan;
 
 class PelaporanAdminController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.pelaporan.index');
+        $query = Pelaporan::with(['user.profile']);
+
+        // Simple Filter Logic
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status_admin', $request->status);
+        }
+
+        $pelaporan = $query->orderBy('created_at', 'desc')->paginate(10); 
+
+        $pelaporan->appends($request->all());
+
+        return view('admin.pelaporan.index', compact('pelaporan'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * PATCH /admin/pelaporan/{id}
+     * Admin memverifikasi laporan (Verified / Rejected).
      */
-    public function create()
+    public function updateStatusAdmin(Request $request, $id)
     {
-        //
-    }
+        $request->validate([
+            'status_admin' => 'required|in:verified,rejected,pending',
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $pelaporan = Pelaporan::findOrFail($id);
+        $pelaporan->status_admin = $request->status_admin;
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        if ($request->status_admin == 'rejected') {
+            $pelaporan->status_ob = 'batal';
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        $pelaporan->save();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->back()->with('success', 'Status laporan berhasil diperbarui.');
     }
 }

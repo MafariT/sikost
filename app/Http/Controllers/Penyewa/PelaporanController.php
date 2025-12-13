@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Penyewa;
 
 use App\Models\Pelaporan;
 use Illuminate\Http\Request;
@@ -56,38 +56,6 @@ class PelaporanController extends Controller
         Pelaporan::create($data);
 
         return redirect()->back()->with('success', 'Laporan berhasil dikirim! Menunggu verifikasi Admin.');
-    }
-
-    /**
-     * GET /admin/pelaporan
-     * Admin melihat semua laporan.
-     */
-    public function indexAdmin()
-    {
-        $pelaporan = Pelaporan::with('user')->orderBy('created_at', 'desc')->get();
-        return view('admin.pelaporan.index', compact('pelaporan'));
-    }
-
-    /**
-     * PATCH /admin/pelaporan/{id}
-     * Admin memverifikasi laporan (Verified / Rejected).
-     */
-    public function updateStatusAdmin(Request $request, $id)
-    {
-        $request->validate([
-            'status_admin' => 'required|in:verified,rejected,pending',
-        ]);
-
-        $pelaporan = Pelaporan::findOrFail($id);
-        $pelaporan->status_admin = $request->status_admin;
-
-        if ($request->status_admin == 'rejected') {
-            $pelaporan->status_ob = 'batal';
-        }
-
-        $pelaporan->save();
-
-        return redirect()->back()->with('success', 'Status laporan berhasil diperbarui.');
     }
 
     /**

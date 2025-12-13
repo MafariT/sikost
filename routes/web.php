@@ -4,7 +4,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Pemilik\DashboardController as PemilikDashboardController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\PelaporanController;
+use App\Http\Controllers\Penyewa\PelaporanController;
 use App\Http\Controllers\Penyewa\PembayaranController;
 use App\Http\Controllers\Penyewa\BerandaController;
 use App\Http\Controllers\Penyewa\RiwayatController;
@@ -71,8 +71,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/pembayaran', [PembayaranController::class, 'adminIndex'])->name('pembayaran.index');
 
-        Route::get('/pelaporan', [PelaporanAdminController::class, 'index'])->name('pelaporan.admin');
-        Route::post('/pelaporan/{id}/update', [PelaporanAdminController::class, 'updateStatusAdmin'])->name('pelaporan.update');
+        Route::get('/pelaporan', [PelaporanAdminController::class, 'index'])->name('pelaporan');
+        Route::patch('/pelaporan/{id}/update', [PelaporanAdminController::class, 'updateStatusAdmin'])->name('pelaporan.update');
 
         Route::get('/kamar', [AdminKamarController::class, 'index'])->name('kamar.index');
         Route::post('/kamar', [AdminKamarController::class, 'store'])->name('kamar.store');
@@ -90,14 +90,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/pembayaran', [PembayaranController::class, 'pemilikIndex'])->name('pembayaran.index');
     });
 
-    // --- OB ---
-    Route::middleware(['role:ob'])->prefix('ob')->name('ob.')->group(function () {
+    // --- Petugas ---
+    Route::middleware(['role:petugas'])->prefix('petugas')->name('petugas.')->group(function () {
         Route::post('/pelaporan/{id}/update', [PelaporanController::class, 'updateStatusOB'])->name('pelaporan.update');
     });
 });
 
 // Bagian Petugas (OB) - Mock Routes for Testing
-Route::get('/petugas/keluhan', function () {
+Route::get('/petugas/pelaporan', function () {
 
     $keluhan = [
         (object)[
@@ -128,7 +128,7 @@ Route::get('/petugas/keluhan', function () {
 
     return view('petugas.laporan', compact('keluhan'));
 });
-Route::get('/petugas/keluhan/{id}', function ($id) {
+Route::get('/petugas/pelaporan/{id}', function ($id) {
 
     $keluhan = (object)[
         'id' => $id,

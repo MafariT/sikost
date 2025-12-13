@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Pelaporan;
 
-class PelaporanAdminController extends Controller
+class AdminPelaporanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class PelaporanAdminController extends Controller
             $query->where('status_admin', $request->status);
         }
 
-        $pelaporan = $query->orderBy('created_at', 'desc')->paginate(10); 
+        $pelaporan = $query->orderBy('created_at', 'desc')->paginate(10);
 
         $pelaporan->appends($request->all());
 

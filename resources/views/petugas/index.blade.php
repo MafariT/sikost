@@ -304,60 +304,64 @@ body{
     <div class="sidebar-sub">Sistem Keluhan Kos</div>
 
     <div class="sidebar-info">
-        <strong>Peran</strong>
-        <span>Petugas Kos</span>
-
-        <strong class="mt-3">Akses</strong>
-        <span>Monitoring & Penanganan Keluhan</span>
+        <strong>Petugas</strong>
+        <span>{{ Auth::user()->email }}</span>
+        <strong class="mt-3">Status</strong>
+        <span class="badge bg-success bg-opacity-25 text-white">Online</span>
     </div>
 
     <div class="sidebar-footer">
-        <a href="#" class="btn btn-logout">🚪 Logout</a>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="btn-logout">🚪 Logout</button>
+        </form>
     </div>
 </aside>
 
 <!-- CONTENT -->
 <section class="content">
-
-    <div class="page-title">Daftar Keluhan</div>
+    <div class="page-title">Daftar Tugas</div>
     <div class="page-sub">
-        Keluhan yang masuk dan perlu ditindaklanjuti oleh petugas
+        Laporan kerusakan yang telah diverifikasi Admin dan perlu dikerjakan.
     </div>
 
     <div class="row g-4">
-        @foreach($keluhan as $k)
+        @forelse($pelaporan as $p)
         <div class="col-xl-4 col-lg-6">
             <div class="card-keluhan">
-
                 <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div class="card-title">{{ $k->judul_keluhan }}</div>
+                    <div class="card-title">{{ Str::limit($p->keluhan, 20) }}</div>
+
                     <span class="badge
-                        @if($k->status=='Pending') bg-danger
-                        @elseif($k->status=='Diproses') bg-warning text-dark
-                        @else bg-success @endif">
-                        {{ $k->status }}
+                        @if($p->status_ob == 'pending') bg-secondary
+                        @elseif($p->status_ob == 'proses') bg-warning text-dark
+                        @else bg-success @endif
+                        px-3 py-2 rounded-pill">
+                        {{ ucfirst($p->status_ob) }}
                     </span>
                 </div>
 
-                <div class="card-label">No Kamar</div>
-                <div class="card-value">{{ $k->no_kamar }}</div>
+                <div class="card-label">Lokasi / Kamar</div>
+                <div class="card-value">Kamar {{ $p->no_kamar }}</div>
 
-                <div class="card-label">Tanggal Laporan</div>
+                <div class="card-label">Waktu Laporan</div>
                 <div class="card-value">
-                    {{ $k->tanggal_keluhan ?? '-' }} {{ $k->waktu_keluhan ?? '' }}
+                    {{ \Carbon\Carbon::parse($p->tanggal_keluhan ?? $p->created_at)->timezone('Asia/Jakarta')->format('d-m-Y') }} <span class="text-muted small">{{ $p->waktu_keluhan ? \Carbon\Carbon::parse($p->waktu_keluhan)->timezone('Asia/Jakarta')->format('H:i') : \Carbon\Carbon::parse($p->created_at)->timezone('Asia/Jakarta')->format('H:i') }}</span>
                 </div>
 
                 <div class="mt-auto pt-4">
-                    <a href="/petugas/keluhan/{{ $k->id }}" class="btn btn-detail w-100">
+                    <a href="{{ route('petugas.pelaporan.show', $p->id_pelaporan) }}" class="btn-detail">
                         Lihat Detail
                     </a>
                 </div>
-
             </div>
         </div>
-        @endforeach
+        @empty
+        <div class="col-12 text-center py-5">
+            <h4 class="text-muted">Tidak ada tugas baru.</h4>
+        </div>
+        @endforelse
     </div>
-
 </section>
 
 </body>

@@ -282,112 +282,128 @@ body{
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-    <div class="sidebar-title">🛠 Petugas</div>
-    <div class="sidebar-sub">Sistem Keluhan Kos</div>
+    <div style="font-size:38px; font-weight:900; margin-bottom: 20px;">🛠 Petugas</div>
 
-    <div class="sidebar-info">
-        <strong>Peran</strong>
-        <div>Petugas Kos</div>
-
-        <strong class="mt-3">Akses</strong>
-        <div>Monitoring & Penanganan Keluhan</div>
+    <div style="background:rgba(255,255,255,0.1); padding:15px; border-radius:15px; font-size:14px; margin-bottom: 40px;">
+        <strong>Petugas</strong><br> {{ Auth::user()->email }}
     </div>
 
-    <div class="sidebar-footer">
-        <a href="#" class="btn btn-logout">🚪 Logout</a>
-    </div>
+    <form method="POST" action="{{ route('logout') }}" style="margin-top: auto;">
+        @csrf
+        <button type="submit" class="btn-logout">🚪 Logout</button>
+    </form>
 </aside>
 
 <!-- CONTENT -->
 <section class="content">
 
+    <!-- ALERTS -->
+    @if(session('success'))
+        <div class="alert alert-success border-0 rounded-4 mb-4 shadow-sm">
+            <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+        </div>
+    @endif
+
     <div class="page-header">
         <div>
             <div class="page-title">Detail Keluhan</div>
-            <div class="page-sub">Informasi lengkap laporan warga</div>
+            <div style="color:#64748b;">Informasi lengkap pekerjaan</div>
         </div>
-        <a href="/petugas/keluhan" class="btn btn-secondary fw-bold rounded-pill px-4">
+        <a href="{{ route('petugas.pelaporan.index') }}" class="btn btn-secondary rounded-pill px-4 fw-bold">
             ⬅ Kembali
         </a>
     </div>
 
     <div class="detail-card">
-
         <!-- INFO -->
         <div class="row g-4 mb-4">
             <div class="col-md-6">
                 <div class="info-label">Judul Keluhan</div>
-                <div class="info-value">{{ $keluhan->judul_keluhan }}</div>
+                <div class="info-value">{{ $pelaporan->keluhan }}</div>
             </div>
 
             <div class="col-md-6">
                 <div class="info-label">No Kamar</div>
-                <div class="info-value">{{ $keluhan->no_kamar }}</div>
+                <div class="info-value">{{ $pelaporan->no_kamar }}</div>
             </div>
 
             <div class="col-md-6">
-                <div class="info-label">Tanggal & Waktu</div>
+                <div class="info-label">Waktu Laporan</div>
                 <div class="info-value">
-                    {{ $keluhan->tanggal_keluhan ?? '-' }} {{ $keluhan->waktu_keluhan ?? '' }}
+                    {{ \Carbon\Carbon::parse($pelaporan->tanggal_keluhan ?? $pelaporan->created_at)->timezone('Asia/Jakarta')->format('d-m-Y') }}, {{ $pelaporan->waktu_keluhan ? \Carbon\Carbon::parse($pelaporan->waktu_keluhan)->timezone('Asia/Jakarta')->format('H:i') : \Carbon\Carbon::parse($p->created_at)->timezone('Asia/Jakarta')->format('H:i') }}
                 </div>
             </div>
 
             <div class="col-md-6">
-                <div class="info-label">Status</div>
+                <div class="info-label">Status Pekerjaan</div>
                 <span class="badge
-                    @if($keluhan->status=='Pending') bg-danger
-                    @elseif($keluhan->status=='Diproses') bg-warning text-dark
+                    @if($pelaporan->status_ob == 'pending') bg-secondary
+                    @elseif($pelaporan->status_ob == 'proses') bg-warning text-dark
                     @else bg-success @endif
                     px-3 py-2 fs-6">
-                    {{ $keluhan->status }}
+                    {{ ucfirst($pelaporan->status_ob) }}
                 </span>
             </div>
 
             <div class="col-12">
-                <div class="info-label">Deskripsi Keluhan</div>
-                <div class="info-value">{{ $keluhan->deskripsi_keluhan }}</div>
+                <div class="info-label">Deskripsi Masalah</div>
+                <div class="info-value p-3 bg-light rounded-3" style="font-size: 16px; font-weight: normal;">
+                    {{ $pelaporan->deskripsi_keluhan }}
+                </div>
             </div>
         </div>
 
         <!-- FOTO -->
         <div class="row g-4 mb-4">
             <div class="col-md-6">
-                <div class="info-label mb-2">Foto Bukti</div>
-                @if($keluhan->foto_bukti)
-                    <img src="{{ asset('storage/'.$keluhan->foto_bukti) }}" class="img-preview" onclick="window.open(this.src)">
+                <div class="info-label mb-2">Foto Bukti (Dari Penyewa)</div>
+                @if($pelaporan->foto_bukti)
+                    <img src="{{ Storage::disk('s3')->url($pelaporan->foto_bukti) }}" class="img-preview" onclick="window.open(this.src)">
                 @else
-                    <div class="empty-image">Tidak ada foto bukti</div>
+                    <div class="p-5 bg-light rounded text-center text-muted">Tidak ada foto bukti</div>
                 @endif
             </div>
 
             <div class="col-md-6">
-                <div class="info-label mb-2">Foto Setelah Perbaikan</div>
-                @if($keluhan->foto_after_perbaikan)
-                    <img src="{{ asset('storage/'.$keluhan->foto_after_perbaikan) }}" class="img-preview" onclick="window.open(this.src)">
+                <div class="info-label mb-2">Foto Hasil Perbaikan (Wajib jika selesai)</div>
+                @if($pelaporan->foto_after_perbaikan)
+                    <img src="{{ Storage::disk('s3')->url($pelaporan->foto_after_perbaikan) }}" class="img-preview mb-2" onclick="window.open(this.src)">
+                    <div class="text-success small fw-bold"><i class="fas fa-check"></i> Foto tersimpan</div>
                 @else
-                    <div class="empty-image">Belum ada foto</div>
+                    <div class="p-5 bg-light rounded text-center text-muted mb-2">Belum ada foto perbaikan</div>
                 @endif
             </div>
         </div>
 
         <hr class="my-4">
 
-        <!-- FORM -->
-        <form method="POST" enctype="multipart/form-data" class="d-flex flex-wrap gap-3">
+        <!-- FORM UPDATE -->
+        <form action="{{ route('petugas.pelaporan.update', $pelaporan->id_pelaporan) }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <select class="form-select w-auto">
-                <option {{ $keluhan->status=='Pending' ? 'selected' : '' }}>Pending</option>
-                <option {{ $keluhan->status=='Diproses' ? 'selected' : '' }}>Diproses</option>
-                <option {{ $keluhan->status=='Selesai' ? 'selected' : '' }}>Selesai</option>
-            </select>
+            @method('PATCH')
 
-            <input type="file" class="form-control w-auto">
+            <div class="row align-items-end g-3">
+                <div class="col-md-4">
+                    <label class="info-label">Update Status</label>
+                    <select name="status_ob" class="form-select form-select-lg">
+                        <option value="pending" {{ $pelaporan->status_ob == 'pending' ? 'selected' : '' }}>Pending (Belum Dikerjakan)</option>
+                        <option value="proses" {{ $pelaporan->status_ob == 'proses' ? 'selected' : '' }}>Sedang Dikerjakan</option>
+                        <option value="selesai" {{ $pelaporan->status_ob == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                    </select>
+                </div>
 
-            <button class="btn btn-save">Simpan Perubahan</button>
+                <div class="col-md-5">
+                    <label class="info-label">Upload Bukti Perbaikan</label>
+                    <input type="file" name="foto_after_perbaikan" class="form-control form-control-lg">
+                </div>
+
+                <div class="col-md-3">
+                    <button type="submit" class="btn-save w-100">Simpan</button>
+                </div>
+            </div>
         </form>
 
     </div>
-
 </section>
 
 </body>

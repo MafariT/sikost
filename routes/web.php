@@ -9,10 +9,11 @@ use App\Http\Controllers\Penyewa\PembayaranController;
 use App\Http\Controllers\Penyewa\BerandaController;
 use App\Http\Controllers\Penyewa\RiwayatController;
 use App\Http\Controllers\Penyewa\ProfileController;
-use App\Http\Controllers\Admin\KamarController as AdminKamarController;
-use App\Http\Controllers\Admin\PelaporanAdminController;
 use App\Http\Controllers\Penyewa\KamarController;
 use App\Http\Controllers\Penyewa\BookingController;
+use App\Http\Controllers\Admin\KamarController as AdminKamarController;
+use App\Http\Controllers\Admin\AdminPelaporanController;
+use App\Http\Controllers\Petugas\PetugasPelaporanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,8 +72,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/pembayaran', [PembayaranController::class, 'adminIndex'])->name('pembayaran.index');
 
-        Route::get('/pelaporan', [PelaporanAdminController::class, 'index'])->name('pelaporan');
-        Route::patch('/pelaporan/{id}/update', [PelaporanAdminController::class, 'updateStatusAdmin'])->name('pelaporan.update');
+        Route::get('/pelaporan', [AdminPelaporanController::class, 'index'])->name('pelaporan');
+        Route::patch('/pelaporan/{id}/update', [AdminPelaporanController::class, 'updateStatusAdmin'])->name('pelaporan.update');
 
         Route::get('/kamar', [AdminKamarController::class, 'index'])->name('kamar.index');
         Route::post('/kamar', [AdminKamarController::class, 'store'])->name('kamar.store');
@@ -92,59 +93,10 @@ Route::middleware('auth')->group(function () {
 
     // --- Petugas ---
     Route::middleware(['role:petugas'])->prefix('petugas')->name('petugas.')->group(function () {
-        Route::post('/pelaporan/{id}/update', [PelaporanController::class, 'updateStatusOB'])->name('pelaporan.update');
+    Route::get('/pelaporan', [PetugasPelaporanController::class, 'index'])->name('pelaporan.index');
+    Route::get('/pelaporan/{id}', [PetugasPelaporanController::class, 'show'])->name('pelaporan.show');
+    Route::patch('/pelaporan/{id}', [PetugasPelaporanController::class, 'updateStatus'])->name('pelaporan.update');
     });
 });
-
-// Bagian Petugas (OB) - Mock Routes for Testing
-Route::get('/petugas/pelaporan', function () {
-
-    $keluhan = [
-        (object)[
-            'id' => 1,
-            'judul_keluhan' => 'WC Mampet',
-            'no_kamar' => 'A12',
-            'status' => 'Pending',
-            'tanggal_keluhan' => '05 Desember 2025',
-            'waktu_keluhan' => '14:30',
-        ],
-        (object)[
-            'id' => 2,
-            'judul_keluhan' => 'Lampu Mati',
-            'no_kamar' => 'B03',
-            'status' => 'Diproses',
-            'tanggal_keluhan' => '06 Desember 2025',
-            'waktu_keluhan' => '09:15',
-        ],
-        (object)[
-            'id' => 3,
-            'judul_keluhan' => 'Kipas Rusak',
-            'no_kamar' => 'C05',
-            'status' => 'Selesai',
-            'tanggal_keluhan' => '07 Desember 2025',
-            'waktu_keluhan' => '16:45',
-        ],
-    ];
-
-    return view('petugas.laporan', compact('keluhan'));
-});
-Route::get('/petugas/pelaporan/{id}', function ($id) {
-
-    $keluhan = (object)[
-        'id' => $id,
-        'judul_keluhan' => 'WC Mampet',
-        'no_kamar' => 'A12',
-        'deskripsi_keluhan' =>
-        'Sudah 2 hari WC tidak bisa digunakan dan bau menyengat.',
-        'foto_bukti' => 'keluhan/before/contoh.jpg',
-        'foto_after_perbaikan' => null,
-        'status' => 'Pending',
-        'tanggal_keluhan' => '05 Desember 2025',
-        'waktu_keluhan' => '14:30',
-    ];
-
-    return view('petugas.detail', compact('keluhan'));
-});
-// End of Petugas (OB) Mock Routes
 
 require __DIR__ . '/auth.php';

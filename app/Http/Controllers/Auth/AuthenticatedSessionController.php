@@ -37,8 +37,8 @@ class AuthenticatedSessionController extends Controller
             case 'pemilik':
                 return redirect()->intended(route('pemilik.dashboard'));
 
-            case 'ob':
-                return redirect()->intended(route('ob.dashboard'));
+            case 'petugas':
+                return redirect()->intended(route('petugas.pelaporan.index'));
 
             case 'penyewa':
             default:

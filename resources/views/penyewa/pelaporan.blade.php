@@ -12,7 +12,7 @@
             <div class="col-lg-6 hero-content">
                 <h1>Laporkan Keluhan Kamar dengan Cepat</h1>
                 <p>
-                    Sampaikan keluhan terkait kamar dan fasilitas kos secara online. 
+                    Sampaikan keluhan terkait kamar dan fasilitas kos secara online.
                     Admin dan petugas kos akan menerima laporanmu dan menindaklanjuti dengan lebih terstruktur.
                 </p>
 
@@ -166,10 +166,10 @@
                                                 {{-- waktu + tanggal --}}
                                                 <td>
                                                     <small class="d-block">
-                                                        {{ $p->tanggal_keluhan ?? $p->created_at->format('d-m-Y') }}
+                                                        {{ \Carbon\Carbon::parse($p->tanggal_keluhan ?? $p->created_at)->timezone('Asia/Jakarta')->format('d-m-Y') }}
                                                     </small>
                                                     <small class="text-muted">
-                                                        {{ $p->waktu_keluhan ? \Carbon\Carbon::parse($p->waktu_keluhan)->format('H:i') : $p->created_at->format('H:i') }}
+                                                        {{ $p->waktu_keluhan ? \Carbon\Carbon::parse($p->waktu_keluhan)->timezone('Asia/Jakarta')->format('H:i') : \Carbon\Carbon::parse($p->created_at)->timezone('Asia/Jakarta')->format('H:i') }}
                                                     </small>
                                                 </td>
 
@@ -204,14 +204,14 @@
                                                 {{-- foto bukti / after --}}
                                                 <td>
                                                     @if($p->foto_bukti)
-                                                        <a href="{{ asset('storage/'.$p->foto_bukti) }}"
+                                                        <a href="{{ asset(Storage::disk('s3')->url($p->foto_bukti)) }}"
                                                            target="_blank"
                                                            class="btn btn-sm btn-outline-primary mb-1 d-block">
                                                             Bukti
                                                         </a>
                                                     @endif
                                                     @if($p->foto_after_perbaikan)
-                                                        <a href="{{ asset('storage/'.$p->foto_after_perbaikan) }}"
+                                                        <a href="{{ asset(Storage::disk('s3')->url($p->foto_after_perbaikan)) }}"
                                                            target="_blank"
                                                            class="btn btn-sm btn-outline-success d-block">
                                                             After

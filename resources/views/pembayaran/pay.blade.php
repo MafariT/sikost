@@ -10,7 +10,7 @@
         <div class="col-lg-5 col-md-8">
             <div class="card border-0 shadow-lg" style="border-radius: 20px;">
                 <div class="card-body p-4 p-md-5 text-center">
-                    
+
                     <div class="mb-4">
                         <i class="fas fa-money-check-alt fa-3x" style="color: var(--royal); text-shadow: 0 0 10px rgba(51, 78, 172, 0.4);"></i>
                     </div>
@@ -39,7 +39,7 @@
                     <button id="pay-button" class="btn btn-primary-custom w-100 py-3 fw-bold">
                         <i class="fas fa-lock me-2"></i> Lanjutkan ke Pembayaran Aman
                     </button>
-                    
+
                     <p class="mt-4 small" style="color: var(--china);">
                         Pembayaran akan diproses melalui Midtrans. Anda akan diarahkan ke halaman pembayaran yang aman.
                     </p>
@@ -54,7 +54,7 @@
 
 <script type="text/javascript">
     var payButton = document.getElementById('pay-button');
-    
+
     payButton.addEventListener('click', function () {
         // Tampilkan loading state atau disable tombol jika perlu
         payButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Memproses...';
@@ -63,11 +63,11 @@
         window.snap.pay('{{ $snapToken }}', {
             onSuccess: function(result){
                 alert("Pembayaran Berhasil!");
-                window.location.href = "{{ route('booking.index') }}";
+                window.location.href = "{{ route('penyewa.riwayat') }}";
             },
             onPending: function(result){
                 alert("Menunggu Pembayaran...");
-                window.location.href = "{{ route('booking.index') }}";
+                window.location.href = "{{ route('penyewa.riwayat') }}";
             },
             onError: function(result){
                 alert("Pembayaran Gagal! Silakan coba lagi.");

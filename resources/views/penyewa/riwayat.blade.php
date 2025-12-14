@@ -272,289 +272,257 @@
 
             <div class="row justify-content-center">
 
-                {{-- SEARCH BAR & FILTER --}}
-
                 <div class="row justify-content-center mb-5">
-                    {{-- Menggunakan col-lg-9 agar sedikit lebih lebar tapi tetap manis --}}
                     <div class="col-lg-9">
-
                         <form action="{{ route('penyewa.riwayat') }}" method="GET" id="searchForm">
-
-                            {{-- Input Hidden untuk Filter --}}
                             <input type="hidden" name="status" id="statusInput" value="{{ request('status', 'all') }}">
 
                             <div class="search-pill">
-
-                                {{-- 1. Ikon Search --}}
                                 <i class="fas fa-search search-icon ms-2"></i>
-
-                                {{-- 2. Input Text --}}
                                 <input type="text" name="search" class="form-control search-input"
-                                    placeholder="Cari Invoice atau Nama Kamar..." value="{{ request('search') }}"
-                                    autocomplete="off">
-
-                                {{-- 3. Pembatas Vertikal --}}
+                                    placeholder="Cari ID Booking atau No Kamar..." value="{{ request('search') }}" autocomplete="off">
                                 <div class="vertical-divider"></div>
-
-                                {{-- 4. Tombol Filter Icon --}}
                                 <div class="dropdown">
-                                    <button
-                                        class="btn-filter-icon {{ request('status') && request('status') != 'all' ? 'active-filter' : '' }} me-1"
-                                        type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                        title="Filter Status">
+                                    <button class="btn-filter-icon {{ request('status') && request('status') != 'all' ? 'active-filter' : '' }} me-1"
+                                        type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Filter Status">
                                         <i class="fas fa-sliders-h"></i>
                                     </button>
-
-                                    {{-- Isi Dropdown --}}
                                     <ul class="dropdown-menu dropdown-menu-end filter-dropdown-menu">
-                                        <li>
-                                            <h6 class="dropdown-header text-uppercase small fw-bold"
-                                                style="color: var(--china);">Filter Status</h6>
-                                        </li>
-
-                                        <li onclick="selectStatus('all')">
-                                            <a
-                                                class="dropdown-item filter-dropdown-item {{ request('status') == 'all' || !request('status') ? 'active' : '' }}">
-                                                Semua Status
-                                            </a>
-                                        </li>
-                                        <li onclick="selectStatus('menunggu_pelunasan')">
-                                            <a
-                                                class="dropdown-item filter-dropdown-item {{ request('status') == 'menunggu_pelunasan' ? 'active' : '' }}">
-                                                Menunggu Pelunasan
-                                            </a>
-                                        </li>
-                                        <li onclick="selectStatus('lunas')">
-                                            <a
-                                                class="dropdown-item filter-dropdown-item {{ request('status') == 'lunas' ? 'active' : '' }}">
-                                                Lunas
-                                            </a>
-                                        </li>
-                                        <li onclick="selectStatus('tidak_aktif')">
-                                            <a
-                                                class="dropdown-item filter-dropdown-item {{ request('status') == 'tidak_aktif' ? 'active' : '' }}">
-                                                Tidak Aktif
-                                            </a>
-                                        </li>
+                                        <li><h6 class="dropdown-header text-uppercase small fw-bold" style="color: var(--china);">Filter Status</h6></li>
+                                        <li onclick="selectStatus('all')"><a class="dropdown-item filter-dropdown-item {{ request('status') == 'all' ? 'active' : '' }}">Semua Status</a></li>
+                                        <li onclick="selectStatus('menunggu_pelunasan')"><a class="dropdown-item filter-dropdown-item {{ request('status') == 'menunggu_pelunasan' ? 'active' : '' }}">Aktif / DP</a></li>
+                                        <li onclick="selectStatus('lunas')"><a class="dropdown-item filter-dropdown-item {{ request('status') == 'lunas' ? 'active' : '' }}">Lunas</a></li>
+                                        <li onclick="selectStatus('tidak_aktif')"><a class="dropdown-item filter-dropdown-item {{ request('status') == 'tidak_aktif' ? 'active' : '' }}">Tidak Aktif</a></li>
                                     </ul>
                                 </div>
-
                             </div>
                         </form>
-
                     </div>
                 </div>
 
                 <script>
-                    function selectStatus(statusValue) {
-                        document.getElementById('statusInput').value = statusValue;
+                    function selectStatus(val) {
+                        document.getElementById('statusInput').value = val;
                         document.getElementById('searchForm').submit();
                     }
                 </script>
 
-                {{-- CARD BOOKING --}}
-
-                @forelse($bookings as $booking)
+                 @forelse($bookings as $booking)
                     @php
-                        // PERBAIKAN: Menggunakan tanda panah (->) untuk akses Object
-                        $collapseId = 'collapseHistory-' . $booking->id;
-                        $tableId = 'table-' . $booking->id;
-                        $paginId = 'pagin-' . $booking->id;
+                        $uiLabel = 'Menunggu Pembayaran';
+                        $uiClass = 'bg-warning text-dark';
+                        $isInactive = false;
 
-                        $isInactive = $booking->status == 'tidak_aktif';
+                        switch($booking->status_booking) {
+                            case 'menunggu_pembayaran':
+                                $uiLabel = 'Menunggu Pembayaran';
+                                $uiClass = 'bg-warning text-dark';
+                                break;
+                            case 'dp_50':
+                                $uiLabel = 'Belum Lunas';
+                                $uiClass = 'bg-info text-white';
+                                break;
+                            case 'lunas':
+                                $uiLabel = 'Lunas / Aktif';
+                                $uiClass = 'bg-success text-white';
+                                break;
+                            case 'cancel':
+                                $uiLabel = 'Dibatalkan';
+                                $uiClass = 'bg-danger text-white';
+                                $isInactive = true;
+                                break;
+                            case 'selesai':
+                                $uiLabel = 'Selesai';
+                                $uiClass = 'bg-secondary text-white';
+                                $isInactive = true;
+                                break;
+                        }
+
                         $cardClass = $isInactive ? 'card-disabled' : '';
                         $headerClass = $isInactive ? 'header-disabled' : '';
+                        $collapseId = 'collapseHistory-' . $booking->id_booking;
                     @endphp
 
                     <div class="col-lg-10 mb-5">
                         <div class="card card-booking {{ $cardClass }}">
 
                             {{-- HEADER --}}
-                            <div
-                                class="booking-header {{ $headerClass }} d-flex justify-content-between align-items-center">
-                                <x-badge-status :status="$booking->status" />
+                            <div class="booking-header {{ $headerClass }} d-flex justify-content-between align-items-center">
+                                <span class="badge rounded-pill {{ $uiClass }} px-3 py-2">
+                                    {{ $uiLabel }}
+                                </span>
                                 <div class="fw-bold" style="color: var(--china); letter-spacing: 1px;">
-                                    {{ $booking->invoice }}
+                                    #BK-{{ $booking->id_booking }}
                                 </div>
                             </div>
 
                             {{-- BODY --}}
                             <div class="card-body p-4">
                                 <div class="row g-4">
+                                    <!-- INFO KAMAR -->
                                     <div class="col-md-4">
-                                        <img src="{{ $booking->img }}" class="img-fluid rounded-3 mb-3 shadow-sm"
-                                            style="width: 100%; height: 180px; object-fit: cover;" alt="Kamar">
+                                        <img src="{{ Storage::disk('s3')->url($booking->kamar->foto_kamar) }}"
+                                             class="img-fluid rounded-3 mb-3 shadow-sm"
+                                             style="width: 100%; height: 180px; object-fit: cover;">
                                         <h5 class="fw-bold mb-1" style="color: var(--color-midnight);">
-                                            {{ $booking->kamar }}
+                                            Kamar {{ $booking->kamar->no_kamar }}
                                         </h5>
-                                        <p class="text-muted small mb-0"><i class="fas fa-map-marker-alt me-1"></i>
-                                            {{ $booking->kost }}
+                                        <p class="text-muted small mb-0">
+                                            <i class="fas fa-map-marker-alt me-1"></i> SiKost Area Utama
                                         </p>
                                     </div>
 
+                                    <!-- INFO TAGIHAN -->
                                     <div class="col-md-5 border-start-md ps-md-4">
                                         <h6 class="text-uppercase text-muted small fw-bold mb-3">Rincian Sewa</h6>
                                         <div class="row mb-2">
-                                            <div class="col-6"><small class="text-muted d-block">Check-in</small><span
-                                                    class="fw-bold text-dark">{{ $booking->check_in }}</span></div>
-                                            <div class="col-6"><small class="text-muted d-block">Durasi</small><span
-                                                    class="fw-bold text-dark">{{ $booking->durasi }}</span></div>
-                                            <div class="col-12 pt-2"><small
-                                                    class="text-muted d-block">Check-Out</small><span
-                                                    class="fw-bold text-dark">{{ $booking->check_out }}</span></div>
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Check-in</small>
+                                                <span class="fw-bold text-dark">{{ $booking->tanggal_check_in->format('d M Y') }}</span>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Durasi</small>
+                                                <span class="fw-bold text-dark">{{ $booking->tanggal_check_in->diffInYears($booking->tanggal_check_out) }} Tahun</span>
+                                            </div>
                                         </div>
+
+                                        <!-- INFO HARGA -->
                                         <div class="mt-2 pt-2 border-top border-light">
-                                            <small class="text-muted d-block mb-1">Total Tagihan</small>
-                                            <h3 class="fw-bold text-dark mb-0">{{ $booking->total_tagihan }}</h3>
+                                            <small class="text-muted d-block mb-1">Total Harga Sewa</small>
+                                            <h4 class="fw-bold text-dark mb-0">
+                                                Rp {{ number_format($booking->total_harga, 0, ',', '.') }}
+                                            </h4>
+
+                                            <!-- Info Sisa Tagihan (Jika DP) -->
+                                            @if($booking->status_booking == 'dp_50')
+                                                @php
+                                                    $sudahBayar = $booking->pembayaran->where('status', 'verified')->sum('total_pembayaran');
+                                                    $sisa = $booking->total_harga - $sudahBayar;
+                                                @endphp
+                                                <div class="mt-2 text-danger small fw-bold">
+                                                    Sisa Tagihan: Rp {{ number_format($sisa, 0, ',', '.') }}
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
 
+                                    <!-- TOMBOL AKSI (ACTION BUTTONS) -->
                                     <div class="col-md-3 text-md-end d-flex flex-column gap-3">
-                                        @if ($booking->status == 'menunggu_pelunasan')
-                                            <a href="#"
-                                                class="btn btn-outline-secondary btn-royal-glow rounded-pill w-100 py-2"><i
-                                                    class="fas fa-wallet me-2"></i> Bayar</a>
-                                            <a href="#" class="btn btn-danger rounded-pill w-100 py-2"><i
-                                                    class="fa-solid fa-right-from-bracket"></i> Checkout</a>
-                                        @elseif($booking->status == 'lunas')
-                                            <a href="#"
-                                                class="btn btn-outline-secondary btn-royal-glow rounded-pill w-100 py-2"><i
-                                                    class="fas fa-wallet me-2"></i> Bayar</a>
-                                            <a href="#" class="btn btn-danger rounded-pill w-100 py-2"><i
-                                                    class="fa-solid fa-right-from-bracket"></i> Checkout</a>
+
+                                        {{-- LOGIC TOMBOL --}}
+                                        @if ($booking->status_booking == 'menunggu_pembayaran')
+                                            <!-- Tombol Bayar Awal -->
+                                            <a href="{{ route('pembayaran.pay', $booking->id_booking) }}"
+                                                class="btn btn-primary rounded-pill w-100 py-2">
+                                                <i class="fas fa-wallet me-2"></i> Bayar Sekarang
+                                            </a>
+                                            <!-- Tombol Cancel -->
+                                            <form action="{{ route('booking.update', $booking->id_booking) }}" method="POST">
+                                                @csrf @method('PATCH')
+                                                <input type="hidden" name="action" value="cancel">
+                                                <button class="btn btn-outline-danger rounded-pill w-100 py-2 small" onclick="return confirm('Batalkan?')">
+                                                    Batal
+                                                </button>
+                                            </form>
+
+                                        @elseif ($booking->status_booking == 'dp_50')
+                                            <!-- Tombol Pelunasan (Checkout) -->
+                                            <a href="{{ route('pembayaran.pay', $booking->id_booking) }}"
+                                                class="btn btn-danger btn-royal-glow rounded-pill w-100 py-2">
+                                                <i class="fas fa-money-bill-wave me-2"></i> Lunasi Tagihan
+                                            </a>
+                                            <div class="text-center text-muted small fst-italic">
+                                                Booking Aktif
+                                            </div>
+
+                                        @elseif ($booking->status_booking == 'lunas')
+
+                                            <button disabled class="btn btn-success rounded-pill w-100 py-2 mb-2">
+                                                <i class="fas fa-check-circle me-2"></i> Aktif / Lunas
+                                            </button>
+
+                                            <!-- NEW: CHECKOUT BUTTON (For Lunas users) -->
+                                            <form action="{{ route('booking.update', $booking->id_booking) }}" method="POST">
+                                                @csrf @method('PATCH')
+                                                <input type="hidden" name="action" value="checkout">
+                                                <button type="submit" class="btn btn-outline-danger rounded-pill w-100 py-2"
+                                                        onclick="return confirm('Apakah Anda yakin ingin Checkout? Masa sewa Anda akan berakhir.')">
+                                                    <i class="fas fa-sign-out-alt me-2"></i> Checkout Sekarang
+                                                </button>
+                                            </form>
+
                                         @else
-                                            <button disabled class="btn btn-secondary rounded-pill w-100 py-2"><i
-                                                    class="fas fa-ban me-2"></i> Selesai</button>
+                                            <button disabled class="btn btn-secondary rounded-pill w-100 py-2">
+                                                {{ ucfirst($booking->status_booking) }}
+                                            </button>
                                         @endif
+
                                     </div>
                                 </div>
 
                                 <div class="dashed-line"></div>
 
-                                {{-- HISTORI PEMBAYARAN --}}
+                                {{-- HISTORY LOGS --}}
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h6 class="fw-bold mb-0 small text-muted text-uppercase"><i
-                                            class="fas fa-history me-2"></i> Riwayat Pembayaran</h6>
+                                    <h6 class="fw-bold mb-0 small text-muted text-uppercase">
+                                        <i class="fas fa-history me-2"></i> Riwayat Transaksi
+                                    </h6>
                                     <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#{{ $collapseId }}">
-                                        <i class="fas fa-chevron-down small"></i> Lihat Detail
+                                        Detail
                                     </button>
                                 </div>
 
                                 <div class="collapse" id="{{ $collapseId }}">
                                     <div class="card card-body border-0 bg-light p-3 rounded-3">
                                         <div class="table-responsive">
-                                            <table class="table table-simple table-hover mb-0" id="{{ $tableId }}">
+                                            <table class="table table-simple table-hover mb-0">
                                                 <thead>
                                                     <tr>
                                                         <th>Tanggal</th>
-                                                        <th>Keterangan</th>
-                                                        <th>Metode</th>
-                                                        <th class="text-end">Nominal</th>
+                                                        <th>Jenis</th>
+                                                        <th>Nominal</th>
                                                         <th class="text-center">Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {{-- PERBAIKAN: Loop Histori --}}
-                                                    @foreach ($booking->histori as $histori)
+                                                    @foreach ($booking->pembayaran as $pembayaran)
                                                         <tr>
-                                                            {{-- Coba pakai panah (->) dulu untuk histori --}}
-                                                            <td>{{ $histori->tgl ?? $histori['tgl'] }}</td>
-                                                            <td>{{ $histori->ket ?? $histori['ket'] }}</td>
-                                                            <td>{{ $histori->metode ?? $histori['metode'] }}</td>
-                                                            <td class="text-end fw-bold">
-                                                                {{ $histori->nom ?? $histori['nom'] }}</td>
+                                                            <td>{{ $pembayaran->created_at->format('d/m/y H:i') }}</td>
+                                                            <td class="text-uppercase small fw-bold">
+                                                                {{ str_replace('_', ' ', $pembayaran->jenis_pembayaran) }}
+                                                            </td>
+                                                            <td>Rp {{ number_format($pembayaran->total_pembayaran, 0, ',', '.') }}</td>
                                                             <td class="text-center">
-                                                                <x-badge-status :status="$histori->stat ?? $histori['stat']" />
+                                                                @if($pembayaran->status == 'verified')
+                                                                    <span class="badge bg-success">Sukses</span>
+                                                                @elseif($pembayaran->status == 'pending')
+                                                                    <span class="badge bg-warning text-dark">Pending</span>
+                                                                @else
+                                                                    <span class="badge bg-danger">Gagal</span>
+                                                                @endif
                                                             </td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <nav class="d-flex justify-content-end mt-4">
-                                            <ul class="pagination pagination-modern mb-0" id="{{ $paginId }}"></ul>
-                                        </nav>
                                     </div>
                                 </div>
-                            </div>
 
-                            {{-- Script Pagination --}}
-                            <script>
-                                document.addEventListener("DOMContentLoaded", function() {
-                                    if (typeof simplePagination === 'function') {
-                                        simplePagination('{{ $tableId }}', '{{ $paginId }}', 3);
-                                    }
-                                });
-                            </script>
+                            </div>
                         </div>
                     </div>
                 @empty
-                    <div class="col-12 text-center py-5">
-                        <h4 class="text-muted">Belum ada riwayat booking.</h4>
+                    <div class="text-center py-5">
+                        <h4>Belum ada riwayat booking.</h4>
                     </div>
                 @endforelse
 
+                <div class="d-flex justify-content-center mt-4">
+                    {{ $bookings->links() }}
+                </div>
             </div>
         </div>
     </div>
-
-    {{-- JS PAGINATION LOGIC --}}
-    <script>
-        function simplePagination(tableId, paginId, rowsPerPage) {
-            const table = document.getElementById(tableId);
-            const pagin = document.getElementById(paginId);
-            if (!table || !pagin) return;
-            const tbody = table.querySelector('tbody');
-            const rows = tbody.querySelectorAll('tr');
-            const rowCount = rows.length;
-            const pageCount = Math.ceil(rowCount / rowsPerPage);
-            let currentPage = 1;
-
-            function showPage(page) {
-                const start = (page - 1) * rowsPerPage;
-                const end = start + rowsPerPage;
-                rows.forEach((row, index) => {
-                    row.style.display = (index >= start && index < end) ? '' : 'none';
-                });
-            }
-            const updateWidget = () => {
-                pagin.innerHTML = '';
-                if (pageCount <= 1) {
-                    showPage(1);
-                    return;
-                }
-                const createBtn = (text, onClick, isActive = false, isDisabled = false) => {
-                    let li = document.createElement('li');
-                    li.className = `page-item ${isActive ? 'active' : ''} ${isDisabled ? 'disabled' : ''}`;
-                    let link = document.createElement('a');
-                    link.className = `page-link ${text.length > 2 ? 'btn-nav-text' : ''}`;
-                    link.href = "javascript:void(0)";
-                    link.innerHTML = text;
-                    li.onclick = (e) => {
-                        e.preventDefault();
-                        if (!isDisabled) onClick();
-                    };
-                    li.appendChild(link);
-                    return li;
-                };
-                pagin.appendChild(createBtn('Previous', () => {
-                    currentPage--;
-                    updateWidget();
-                }, false, currentPage === 1));
-                for (let i = 1; i <= pageCount; i++) {
-                    pagin.appendChild(createBtn(i, () => {
-                        currentPage = i;
-                        updateWidget();
-                    }, currentPage === i));
-                }
-                pagin.appendChild(createBtn('Next', () => {
-                    currentPage++;
-                    updateWidget();
-                }, false, currentPage === pageCount));
-                showPage(currentPage);
-            };
-            updateWidget();
-        }
-    </script>
 @endsection

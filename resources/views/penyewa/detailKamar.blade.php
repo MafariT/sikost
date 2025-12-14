@@ -1,6 +1,6 @@
 @extends('layouts.layoutPenyewa')
 
-@section('title', 'Detail Kamar - SiKos')
+@section('title', 'Detail Kamar ' . $kamar->no_kamar . ' - SiKos')
 
 @section('konten')
 <link rel="stylesheet" href="{{ asset('css/kamarPenyewa.css') }}">
@@ -8,28 +8,31 @@
 <div class="detail-section">
     <div class="container">
         <div class="detail-container">
-            <!-- Image Gallery -->
             <div class="image-gallery">
-                <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800" 
-                     alt="Kamar Utama" 
-                     class="main-image" 
+                <img src="{{ Storage::disk('s3')->url($kamar->foto_kamar) }}"
+                     alt="Kamar {{ $kamar->no_kamar }}"
+                     class="main-image"
                      id="mainImage">
-                <div class="image-badge">Tersedia</div>
+
+                @if($kamar->status == 'tersedia')
+                    <div class="image-badge" style="background-color: #28a745;">Tersedia</div>
+                @else
+                    <div class="image-badge" style="background-color: #dc3545;">Tidak Tersedia</div>
+                @endif
             </div>
 
             <!-- Content -->
             <div class="detail-content">
-                <!-- Header -->
                 <div class="room-header">
                     <div class="room-title">
-                        <h1>Kamar Kos Premium AC</h1>
+                        <h1>Kamar {{ $kamar->no_kamar }}</h1>
                         <div class="room-location">
                             <i class="fas fa-map-marker-alt"></i>
-                            <span>Jl. Sudirman No. 123, Jambi</span>
+                            <span>SiKost Area Utama, Jambi</span>
                         </div>
                     </div>
                     <div class="room-price">
-                        <div class="price-amount">Rp 1.500.000</div>
+                        <div class="price-amount">Rp {{ number_format($kamar->harga, 0, ',', '.') }}</div>
                         <div class="price-period">per-tahun</div>
                     </div>
                 </div>
@@ -38,11 +41,11 @@
                 <div class="info-grid">
                     <div class="info-item">
                         <div class="info-icon">
-                            <i class="fas fa-bed"></i>
+                            <i class="fas fa-door-open"></i>
                         </div>
                         <div class="info-text">
-                            <h4>Tipe Kamar</h4>
-                            <p>Single Bed</p>
+                            <h4>Nomor Kamar</h4>
+                            <p>{{ $kamar->no_kamar }}</p>
                         </div>
                     </div>
                     <div class="info-item">
@@ -65,20 +68,28 @@
                     </div>
                     <div class="info-item">
                         <div class="info-icon">
-                            <i class="fas fa-door-open"></i>
+                            <i class="fas fa-bolt"></i>
                         </div>
                         <div class="info-text">
-                            <h4>Nomor Kamar</h4>
-                            <p>A-05</p>
+                            <h4>Tipe Kamar</h4>
+                            <p>Single Bed</p>
                         </div>
                     </div>
+                </div>
+
+                <!-- Deskripsi -->
+                <div class="section-block">
+                    <h2>Deskripsi</h2>
+                    <p class="description-text">
+                        {{ $kamar->deskripsi_kamar ?? 'Tidak ada deskripsi tersedia untuk kamar ini.' }}
+                    </p>
                 </div>
 
                 <!-- Fasilitas -->
                 <div class="section-block">
                     <h2>Fasilitas Kamar</h2>
                     <div class="facilities-grid">
-                        <div class="facility-item">
+                      <div class="facility-item">
                             <i class="fas fa-snowflake"></i>
                             <span>AC</span>
                         </div>
@@ -129,18 +140,6 @@
                     </div>
                 </div>
 
-                <!-- Deskripsi -->
-                <div class="section-block">
-                    <h2>Deskripsi</h2>
-                    <p class="description-text">
-                        Kamar kos premium dengan fasilitas lengkap dan nyaman untuk mahasiswa maupun pekerja profesional. 
-                        Lokasi strategis dekat dengan kampus, pusat perbelanjaan, dan transportasi umum. 
-                        Lingkungan aman, bersih, dan kondusif untuk belajar dan beristirahat. 
-                        Dilengkapi dengan AC, WiFi super cepat, kamar mandi dalam, dan furniture berkualitas. 
-                        Pengelolaan profesional dengan sistem keamanan 24 jam dan layanan cleaning service berkala.
-                    </p>
-                </div>
-
                 <!-- Peraturan -->
                 <div class="section-block">
                     <h2>Peraturan Kos</h2>
@@ -175,31 +174,24 @@
 
             <!-- Action Buttons -->
             <div class="action-section">
-                <a href="{{ route('kamar.index') }}" class="btn-contact">
+                <a href="{{ route('kamar.index') }}" class="btn-contact" style="text-decoration: none;">
                     <i class="fas fa-arrow-left"></i>
                     <span>Kembali</span>
                 </a>
-                <a class="btn-booking" href="#">
-                    <i class="fas fa-calendar-check"></i>
-                    <span>Booking Sekarang</span>
-                </a>
+
+                @if($kamar->status == 'tersedia')
+                    <a href="{{ route('booking.create', $kamar->id_kamar) }}" class="btn-booking" style="text-decoration: none;">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Booking Sekarang</span>
+                    </a>
+                @else
+                    <button class="btn-booking" style="background-color: #6c757d; cursor: not-allowed; border:none;" disabled>
+                        <i class="fas fa-times-circle"></i>
+                        <span>Kamar Penuh</span>
+                    </button>
+                @endif
             </div>
         </div>
     </div>
 </div>
-
-<script>
-    function changeImage(thumbnail, imageUrl) {
-        // Update main image
-        document.getElementById('mainImage').src = imageUrl;
-        
-        // Remove active class from all thumbnails
-        document.querySelectorAll('.thumbnail').forEach(thumb => {
-            thumb.classList.remove('active');
-        });
-        
-        // Add active class to clicked thumbnail
-        thumbnail.classList.add('active');
-    }
-</script>
 @endsection

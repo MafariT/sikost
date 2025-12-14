@@ -10,7 +10,7 @@ class Booking extends Model
 {
     use HasFactory;
 
-    protected $table = 'booking'; 
+    protected $table = 'booking';
     protected $primaryKey = 'id_booking';
 
     protected $fillable = [
@@ -37,7 +37,7 @@ class Booking extends Model
      */
     public function profile(): BelongsTo
     {
-        return $this->belongsTo(Profile::class, 'profile_id');
+        return $this->belongsTo(Profile::class, 'profile_id', 'id_profile');
     }
 
     /**
@@ -46,5 +46,10 @@ class Booking extends Model
     public function kamar(): BelongsTo
     {
         return $this->belongsTo(Kamar::class, 'kamar_id', 'id_kamar');
+    }
+
+    public function pembayaran()
+    {
+        return $this->hasMany(Pembayaran::class, 'booking_id', 'id_booking');
     }
 }

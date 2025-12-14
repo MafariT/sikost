@@ -23,10 +23,10 @@ class KamarController extends Controller
      * GET /admin/kamar/{id}
      * Mengambil detail kamar tertentu (untuk view edit/detail).
      */
-    public function show($id)
+    public function edit($id)
     {
         $kamar = Kamar::findOrFail($id);
-        return view('admin.kamar.show', compact('kamar'));
+        return view('admin.kamar.edit', compact('kamar'));
     }
 
     /**

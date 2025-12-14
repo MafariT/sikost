@@ -3,17 +3,18 @@
 @section('title', 'Dashboard Admin')
 
 @section('konten')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <div class="page-header">
     <h1>Dashboard</h1>
-    <p>Selamat datang di panel admin KostKu</p>
+    <p>Selamat datang di panel admin SiKos</p>
 </div>
 
-<!-- Stats Grid -->
 <div class="stats-grid">
     <div class="stat-card">
         <div class="stat-header">
             <div>
-                <div class="stat-value">156</div>
+                <div class="stat-value">{{ $totalKamar }}</div>
                 <div class="stat-label">Total Kamar</div>
             </div>
             <div class="stat-icon blue">
@@ -25,7 +26,7 @@
     <div class="stat-card orange">
         <div class="stat-header">
             <div>
-                <div class="stat-value">89</div>
+                <div class="stat-value">{{ $kamarTerisi }}</div>
                 <div class="stat-label">Kamar Terisi</div>
             </div>
             <div class="stat-icon orange">
@@ -37,7 +38,7 @@
     <div class="stat-card green">
         <div class="stat-header">
             <div>
-                <div class="stat-value">67</div>
+                <div class="stat-value">{{ $kamarTersedia }}</div>
                 <div class="stat-label">Kamar Tersedia</div>
             </div>
             <div class="stat-icon green">
@@ -49,7 +50,7 @@
     <div class="stat-card purple">
         <div class="stat-header">
             <div>
-                <div class="stat-value">12</div>
+                <div class="stat-value">{{ $laporanBaru }}</div>
                 <div class="stat-label">Laporan Baru</div>
             </div>
             <div class="stat-icon purple">
@@ -62,11 +63,10 @@
 <!-- Chart Container -->
 <div class="chart-container">
     <div class="chart-header">
-        <h3>Statistik Booking Bulanan</h3>
+        <h3>Statistik Booking Bulanan ({{ date('Y') }})</h3>
     </div>
-    <div
-        style="height: 300px; display: flex; align-items: center; justify-content: center; background: var(--porcelain); border-radius: 10px;">
-        <p style="color: var(--china); font-size: 1rem;">Chart akan ditampilkan di sini</p>
+    <div style="height: 300px; padding: 10px;">
+        <canvas id="bookingChart"></canvas>
     </div>
 </div>
 
@@ -76,44 +76,56 @@
         <h3>Aktivitas Terbaru</h3>
     </div>
 
-    <div class="activity-item">
-        <div class="activity-icon">
-            <i class="fas fa-user-plus"></i>
+    @forelse($activities as $activity)
+        <div class="activity-item">
+            <div class="activity-icon" style="background-color: {{ $activity['type'] == 'payment' ? '#d1e7dd' : '#cfe2ff' }}; color: {{ $activity['type'] == 'payment' ? '#198754' : '#0d6efd' }};">
+                <i class="{{ $activity['icon'] }}"></i>
+            </div>
+            <div class="activity-details">
+                <h5>{{ $activity['title'] }}</h5>
+                <p>{{ $activity['desc'] }} - <small class="text-muted">{{ $activity['time']->diffForHumans() }}</small></p>
+            </div>
         </div>
-        <div class="activity-details">
-            <h5>Penghuni Baru Terdaftar</h5>
-            <p>Budi Santoso mendaftar di Kamar 101 - 2 jam yang lalu</p>
+    @empty
+        <div class="p-4 text-center text-muted">
+            Belum ada aktivitas terbaru.
         </div>
-    </div>
-
-    <div class="activity-item">
-        <div class="activity-icon">
-            <i class="fas fa-flag"></i>
-        </div>
-        <div class="activity-details">
-            <h5>Laporan Baru Masuk</h5>
-            <p>Laporan kerusakan AC di Kamar 205 - 3 jam yang lalu</p>
-        </div>
-    </div>
-
-    <div class="activity-item">
-        <div class="activity-icon">
-            <i class="fas fa-money-bill"></i>
-        </div>
-        <div class="activity-details">
-            <h5>Pembayaran Diterima</h5>
-            <p>Pembayaran sewa bulan Januari dari Kamar 303 - 5 jam yang lalu</p>
-        </div>
-    </div>
-
-    <div class="activity-item">
-        <div class="activity-icon">
-            <i class="fas fa-edit"></i>
-        </div>
-        <div class="activity-details">
-            <h5>Data Kamar Diperbarui</h5>
-            <p>Informasi fasilitas Kamar 108 telah diperbarui - 1 hari yang lalu</p>
-        </div>
-    </div>
+    @endforelse
 </div>
+
+<script>
+    const ctx = document.getElementById('bookingChart').getContext('2d');
+    const bookingChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+            datasets: [{
+                label: 'Jumlah Booking',
+                data: @json($chartData),
+                borderColor: '#4361ee',
+                backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+</script>
 @endsection

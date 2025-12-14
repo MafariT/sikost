@@ -65,10 +65,8 @@ class KamarController extends Controller
      */
     public function show($id)
     {
-        // $kamar = Kamar::findOrFail($id);
-        // return view('kamar.show', compact('kamar'));
-
-        return view('penyewa.detailKamar');
+        $kamar = Kamar::findOrFail($id);
+        return view('penyewa.detailKamar', compact('kamar'));
     }
 
     /**

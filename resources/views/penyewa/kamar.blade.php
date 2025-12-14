@@ -164,13 +164,13 @@
     </div>
 
     <div class="container">
-        
+
         <div class="filter-container">
             <form action="{{ route('kamar.index') }}" method="GET">
                 <div class="row g-3 align-items-end">
                     <div class="col-lg-5 col-md-4 col-sm-12">
                         <label for="search" class="form-label fw-bold mb-1">Cari No Kamar / Info</label>
-                        <input type="text" class="form-control" id="search" name="search" 
+                        <input type="text" class="form-control" id="search" name="search"
                                value="{{ request('search') }}"
                                placeholder="Contoh: A-101">
                     </div>
@@ -186,7 +186,7 @@
 
                     <div class="col-lg-2 col-md-3 col-sm-6">
                         <label for="min_price" class="form-label fw-bold mb-1">Harga Min.</label>
-                        <input type="number" class="form-control" id="min_price" name="min_price" 
+                        <input type="number" class="form-control" id="min_price" name="min_price"
                                value="{{ request('min_price') }}"
                                placeholder="Rp">
                     </div>
@@ -205,7 +205,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="kos-card">
                     <div class="kos-image">
-                        <img src="{{ Storage::disk('s3')->url($item->foto_kamar) }}" alt="Kamar {{ $item->no_kamar }}">
+                        <img src="{{ $item->foto_kamar ? Storage::disk('s3')->url($item->foto_kamar) : 'https://via.placeholder.com/500x300?text=No+Image+Available' }}" alt="Kamar {{ $item->no_kamar }}">
 
                         @if ($item->status == 'tersedia')
                         <span class="availability-badge badge-available">
@@ -266,7 +266,7 @@
         </div>
 
         <div class="d-flex justify-content-center mt-5">
-            {{ $kamar->links() }} 
+            {{ $kamar->links() }}
         </div>
 
     </div>

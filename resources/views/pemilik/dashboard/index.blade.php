@@ -1,4 +1,4 @@
-@extends('layouts.layoutPemilik')
+@extends('layouts.layout-pemilik')
 
 @section('title', 'SiKos Owner - Dashboard Pemilik')
 

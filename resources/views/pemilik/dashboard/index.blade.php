@@ -101,7 +101,8 @@
                 </div>
 
                 <div class="card-body px-4 pt-0">
-                    <div class="table-responsive table-scroll-mobile">
+                    {{-- PERBAIKAN: HANYA MENGGUNAKAN class="table-responsive" --}}
+                    <div class="table-responsive">
                         <table class="table table-hover mb-0">
                             <thead>
                                 <tr class="bg-light">
@@ -217,6 +218,7 @@
         </div>
 
         <div class="card-body px-4 pt-0">
+            {{-- SUDAH BENAR MENGGUNAKAN class="table-responsive" --}}
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
                     <thead>
@@ -308,6 +310,7 @@
         </div>
 
         <div class="card-body px-4 pt-0">
+            {{-- SUDAH BENAR MENGGUNAKAN class="table-responsive" --}}
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
                     <thead>

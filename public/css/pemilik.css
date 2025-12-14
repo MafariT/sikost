@@ -26,7 +26,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--midnight);
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     background-color: var(--porcelain);
     min-height: 100vh;
     display: flex;
@@ -187,17 +187,32 @@ body {
 }
 
 @media (max-width: 768px) {
-    .table-scroll-mobile {
+    /* .table-scroll-mobile {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+        border-radius: 12px; 
+        margin: 0 -0.5rem; 
     }
 
     .table-scroll-mobile table {
         min-width: 700px;
+        width: 100%;
+    } */
+
+    .table-responsive {
+        /* Properti ini sudah ada dan benar */
+        overflow-x: auto !important; 
+        -webkit-overflow-scrolling: touch;
+        border-radius: 12px !important;
+        margin: 0 -0.5rem;
     }
 
-    .table-scroll-mobile td,
-    .table-scroll-mobile th {
+    .table-responsive table {
+        min-width: 750px; /* Diperkuat agar pasti scroll */
+    }
+
+    .table-responsive th,
+    .table-responsive td{
         white-space: nowrap;
     }
 }
@@ -413,7 +428,7 @@ body {
     
     .table-responsive {
         border-radius: 12px !important;
-        overflow: hidden !important;
+        overflow-x: auto !important;
         margin: 0 -0.5rem;
     }
     

@@ -14,6 +14,10 @@
     }
     
     /* === STICKY FOOTER CSS START === */
+    html {
+    scroll-behavior: smooth;
+}
+
     html, body {
         height: 100%; /* Penting: Memastikan tinggi HTML dan Body 100% dari viewport */
         margin: 0;
@@ -121,20 +125,106 @@
         font-weight: bold;
     }
     /* Footer Full-Width Style (Dipertahankan) */
-    .footer-sikost-full {
-        background: var(--color-midnight);
-        color: var(--color-sky);
-        width: 100%; 
-        margin: 0;
-        padding: 0; 
+    .footer {
+    background: linear-gradient(135deg, #081F5C 0%, #0a2466 100%);
+    color: #fff;
+    padding: 3rem 0 1.5rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h5 {
+    color: #D0E3FF;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.footer-section p,
+.footer-section a {
+    color: rgba(255,255,255,.8);
+    font-size: .9rem;
+    line-height: 1.7;
+    text-decoration: none;
+    transition: .3s;
+}
+
+.footer-section a:hover {
+    color: #D0E3FF;
+    padding-left: 5px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: .5rem;
+}
+
+/* =========================
+   SOCIAL ICON
+========================= */
+.footer-social {
+    display: flex;
+    gap: .75rem;
+    margin-top: 1rem;
+}
+
+.footer-social a {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-social a:hover {
+    background: #334EAC;
+    transform: translateY(-3px);
+}
+
+/* =========================
+   FOOTER BOTTOM
+========================= */
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,.1);
+    padding-top: 1.5rem;
+    text-align: center;
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size: .85rem;
+    opacity: .7;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .footer-content {
+        text-align: center;
     }
+    .footer-social {
+        justify-content: center;
+    }
+}
 </style>
 
 {{-- BUNGKUS SELURUH KONTEN UTAMA DENGAN TAG <MAIN> --}}
 <main> 
 
     {{-- 1. HEADER/HERO AREA --}}
-    <section class="position-relative overflow-hidden" style="min-height: 80vh;">
+  <section id="beranda" class="position-relative overflow-hidden" style="min-height: 80vh;">
         {{-- Background Image --}}
         <div class="position-absolute w-100 h-100" 
             style="background-image: url('{{ asset('img/apartemen.jpeg') }}'); 
@@ -148,11 +238,11 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="logo h4 mb-0 text-white fw-bold">SIKOST</div>
                 <div class="menu d-none d-md-flex gap-4 align-items-center">
-                    <a href="#" class="text-white text-decoration-none fw-normal">Beranda</a>
-                    <a href="#" class="text-white text-decoration-none fw-normal">Cari Kamar</a>
-                    <a href="#" class="text-white text-decoration-none fw-normal">Tentang</a>
+                   <a href="#beranda" class="text-white text-decoration-none fw-normal">Beranda</a>
+                    <a href="#tentang" class="text-white text-decoration-none fw-normal">Tentang</a>
+
                     {{-- TOMBOL LOGIN KECIL DAN SEJAJAR --}}
-                    <a href="#" class="btn btn-sikost-primary btn-nav-login">Login</a>
+                  <a href="{{ route('login') }}" class="btn btn-sikost-primary btn-nav-login">Login</a>
                 </div>
             </div>
         </div>
@@ -167,8 +257,8 @@
             </p>
             
             {{-- Tombol "Cari Kamar" Besar --}}
-            <a href="#" class="btn btn-sikost-primary shadow-lg">
-                Mulai Cari Kamar
+            <a href="{{ route('login') }}" class="btn btn-sikost-primary shadow-lg">
+          Login
             </a>
         </div>
     </section>
@@ -214,7 +304,7 @@
     </section>
 
     {{-- 3. GENERAL FAQS --}}
-    <section class="py-5 bg-sikost-light">
+    <section id="faq" class="py-5 bg-sikost-light">
         <div class="container py-5">
             <div class="row align-items-center">
                 
@@ -346,15 +436,107 @@
 {{-- AKHIR TAG </MAIN> --}}
 
 {{-- Footer SIKOST --}}
-<footer class="footer-sikost-full text-center py-4">
-    <div class="container d-flex justify-content-between align-items-center flex-wrap small">
-        <span class="mb-2 mb-md-0">© 2025 SIKOST — Platform Penyewaan Kos Online</span>
-        <div class="d-flex gap-3">
-            <a href="#" class="text-white text-decoration-none">Tentang Kami</a>
-            <a href="#" class="text-white text-decoration-none">Hubungi Kami</a>
-            <a href="#" class="text-white text-decoration-none">Kebijakan Privasi</a>
+<footer id="tentang" class="footer">
+
+    <div class="container">
+        <div class="footer-content">
+
+            {{-- About --}}
+            <div class="footer-section">
+                <img src="{{ asset('img/logo_admin.png') }}" alt="Logo" style="height:40px" class="mb-3">
+                <p>Platform terpercaya untuk mencari dan menyewakan kos dengan mudah, aman, dan nyaman.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+
+            {{-- Link Cepat --}}
+            <div class="footer-section">
+                <h5>Link Cepat</h5>
+                <ul>
+                    <li><a href="#">Beranda</a></li>
+                    <li><a href="#">Cari Kamar</a></li>
+                    <li><a href="#">Titip Kelola</a></li>
+                    <li><a href="#">Tentang Kami</a></li>
+                </ul>
+            </div>
+
+            {{-- Bantuan --}}
+            <div class="footer-section">
+                <h5>Bantuan</h5>
+                <ul>
+                    <li><a href="#faq">FAQ</a></li>
+
+                    <li><a href="#" data-bs-toggle="modal" data-bs-target="#modalSyarat">Syarat & Ketentuan</a></li>
+<li><a href="#" data-bs-toggle="modal" data-bs-target="#modalPrivasi">Kebijakan Privasi</a></li>
+
+                </ul>
+            </div>
+
+            {{-- Kontak --}}
+            <div class="footer-section">
+                <h5>Kontak</h5>
+                <p><i class="bi bi-geo-alt-fill me-2"></i>Jambi, Indonesia</p>
+                <p><i class="bi bi-envelope-fill me-2"></i>info@sikost.com</p>
+                <p><i class="bi bi-telephone-fill me-2"></i>+62 812-3456-7890</p>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2025 SIKOST. All rights reserved.</p>
         </div>
     </div>
 </footer>
+{{-- ================= MODAL SYARAT & KETENTUAN ================= --}}
+<div class="modal fade" id="modalSyarat" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-4">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold">Syarat & Ketentuan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <p><strong>1.</strong> Pengguna wajib memberikan data yang benar dan valid.</p>
+                        <p><strong>2.</strong> Pembayaran hanya dilakukan melalui metode resmi SIKOST.</p>
+                        <p><strong>3.</strong> Pembatalan dan pengembalian dana mengikuti kebijakan pemilik kos.</p>
+                        <p><strong>4.</strong> SIKOST berhak menangguhkan akun jika terjadi pelanggaran.</p>
+                        <p><strong>5.</strong> Dengan menggunakan layanan ini, pengguna dianggap menyetujui seluruh ketentuan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- ================= MODAL KEBIJAKAN PRIVASI ================= --}}
+<div class="modal fade" id="modalPrivasi" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-4">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold">Kebijakan Privasi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <p><strong>1.</strong> Data pribadi pengguna disimpan secara aman.</p>
+                        <p><strong>2.</strong> Informasi tidak dibagikan kepada pihak ketiga tanpa persetujuan.</p>
+                        <p><strong>3.</strong> Data digunakan untuk keperluan layanan dan peningkatan sistem.</p>
+                        <p><strong>4.</strong> Pengguna berhak meminta penghapusan data.</p>
+                        <p><strong>5.</strong> Kebijakan dapat diperbarui sesuai kebutuhan operasional.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 @endsection

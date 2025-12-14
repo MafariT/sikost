@@ -284,7 +284,7 @@
         </div>
     </div>
 
-    {{-- KELUHAN (Placeholder) --}}
+    {{-- KELUHAN --}}
     <div class="card border-0 shadow-sm rounded-3 mb-4" id="keluhan-section">
         <div class="card-header bg-white border-0 pb-0 pt-4 px-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -293,15 +293,91 @@
                         <i class="fas fa-exclamation-circle me-2 text-danger"></i>
                         Laporan Keluhan Penyewa
                     </h4>
-                    <p class="text-muted mb-0">Keluhan yang perlu perhatian</p>
+                    <p class="text-muted mb-0">Keluhan terbaru yang masuk</p>
                 </div>
+                @if($keluhanProses > 0)
+                    <span class="badge bg-danger bg-opacity-20 text-danger px-3 py-2">
+                        <i class="fas fa-tools me-1"></i> {{ $keluhanProses }} Perlu Perhatian
+                    </span>
+                @else
+                    <span class="badge bg-success bg-opacity-20 text-success px-3 py-2">
+                        <i class="fas fa-check me-1"></i> Semua Aman
+                    </span>
+                @endif
             </div>
         </div>
 
-        <div class="card-body px-4 pb-4">
-            <div class="alert alert-light text-center border-0">
-                <i class="fas fa-folder-open fa-2x text-muted mb-2"></i>
-                <p class="mb-0 text-muted">Belum ada laporan keluhan masuk.</p>
+        <div class="card-body px-4 pt-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr class="bg-light">
+                            <th class="ps-4 py-3">No</th>
+                            <th class="py-3">Pelapor</th>
+                            <th class="py-3">Kamar</th>
+                            <th class="py-3">Masalah</th>
+                            <th class="py-3">Status</th>
+                            <th class="text-center py-3">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($daftarKeluhan as $i => $kl)
+                        <tr>
+                            <td class="ps-4 py-3">{{ $i + 1 }}</td>
+                            <td class="py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-light rounded-circle p-2 me-3">
+                                        <i class="fas fa-user text-muted"></i>
+                                    </div>
+                                    <span>{{ $kl->user->profile->nama_lengkap ?? $kl->user->name }}</span>
+                                </div>
+                            </td>
+                            <td class="py-3 fw-semibold">Kamar {{ $kl->no_kamar }}</td>
+                            <td class="py-3">
+                                <span class="d-inline-block text-truncate" style="max-width: 200px;">
+                                    {{ $kl->keluhan }}
+                                </span>
+                            </td>
+                            <td class="py-3">
+                                @if($kl->status_admin == 'pending')
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary">
+                                        <i class="fas fa-clock me-1"></i> Menunggu Admin
+                                    </span>
+                                @elseif($kl->status_admin == 'rejected')
+                                    <span class="badge bg-danger bg-opacity-10 text-danger">
+                                        <i class="fas fa-times me-1"></i> Ditolak
+                                    </span>
+                                @elseif($kl->status_ob == 'selesai')
+                                    <span class="badge bg-success bg-opacity-10 text-success">
+                                        <i class="fas fa-check-circle me-1"></i> Selesai
+                                    </span>
+                                @elseif($kl->status_ob == 'proses')
+                                    <span class="badge bg-primary bg-opacity-10 text-primary">
+                                        <i class="fas fa-tools me-1"></i> Dikerjakan
+                                    </span>
+                                @else
+                                    <span class="badge bg-warning bg-opacity-10 text-warning">
+                                        <i class="fas fa-user-clock me-1"></i> Menunggu OB
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="text-center py-3">
+                                <button class="btn btn-outline-danger btn-sm px-3"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#detailKeluhan{{ $kl->id_pelaporan }}">
+                                    <i class="fas fa-eye me-1"></i> Detail
+                                </button>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                Tidak ada laporan keluhan saat ini.
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -413,6 +489,96 @@
                         @endif
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
+{{-- MODAL DETAIL KELUHAN --}}
+@foreach($daftarKeluhan as $kl)
+<div class="modal fade" id="detailKeluhan{{ $kl->id_pelaporan }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fw-bold">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Detail Keluhan
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+
+                {{-- INFO UTAMA --}}
+                <div class="row mb-4">
+                    <div class="col-6">
+                        <div class="text-muted small mb-1">Pelapor</div>
+                        <div class="fw-bold">{{ $kl->user->profile->nama_lengkap ?? 'Unknown' }}</div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-muted small mb-1">Kamar</div>
+                        <div class="fw-bold">Kamar {{ $kl->no_kamar }}</div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-6">
+                        <div class="text-muted small mb-1">Waktu Laporan</div>
+                        <div class="fw-bold">
+                            {{ \Carbon\Carbon::parse($kl->tanggal_keluhan)->format('d M Y') }}
+                            <small class="text-muted">{{ $kl->waktu_keluhan }}</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-muted small mb-1">Status Terkini</div>
+                        @if($kl->status_ob == 'selesai')
+                            <span class="badge bg-success">Selesai Diperbaiki</span>
+                        @elseif($kl->status_ob == 'proses')
+                            <span class="badge bg-primary">Sedang Dikerjakan</span>
+                        @elseif($kl->status_admin == 'pending')
+                            <span class="badge bg-secondary">Menunggu Verifikasi Admin</span>
+                        @else
+                            <span class="badge bg-warning text-dark">Dalam Antrian OB</span>
+                        @endif
+                    </div>
+                </div>
+
+                {{-- DESKRIPSI --}}
+                <div class="mb-4">
+                    <div class="text-muted small mb-2">Keluhan</div>
+                    <div class="fw-bold mb-1">{{ $kl->keluhan }}</div>
+                    <div class="bg-light p-3 rounded">
+                        {{ $kl->deskripsi_keluhan }}
+                    </div>
+                </div>
+
+                {{-- FOTO BUKTI --}}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="text-muted small mb-2">Foto Bukti (Awal)</div>
+                        @if($kl->foto_bukti)
+                            <div class="card border-0 overflow-hidden shadow-sm">
+                                <img src="{{ Storage::disk('s3')->url($kl->foto_bukti) }}" class="img-fluid" style="height: 200px; object-fit: cover;" onclick="window.open(this.src)">
+                            </div>
+                        @else
+                            <div class="bg-light rounded p-4 text-center text-muted">Tidak ada foto</div>
+                        @endif
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="text-muted small mb-2">Foto Perbaikan (Akhir)</div>
+                        @if($kl->foto_after_perbaikan)
+                            <div class="card border-0 overflow-hidden shadow-sm">
+                                <img src="{{ Storage::disk('s3')->url($kl->foto_after_perbaikan) }}" class="img-fluid" style="height: 200px; object-fit: cover;" onclick="window.open(this.src)">
+                            </div>
+                        @else
+                            <div class="bg-light rounded p-4 text-center text-muted">Belum ada foto perbaikan</div>
+                        @endif
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer border-0">
                 <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>

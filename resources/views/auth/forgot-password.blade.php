@@ -4,7 +4,6 @@
 <div class="forgot-password-container">
     <div class="container py-5">
         <div class="row justify-content-center align-items-center min-vh-100">
-            <!-- Left Side - Illustration -->
             <div class="col-lg-6 d-none d-lg-block" data-aos="fade-right">
                 <div class="forgot-info">
                     <div class="illustration-wrapper">
@@ -73,7 +72,7 @@
 
                     <!-- Session Status -->
                     @if (session('status'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert" data-aos="zoom-in">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
                             <div class="d-flex align-items-start">
                                 <i class="bi bi-check-circle-fill me-2 fs-5"></i>
                                 <div class="flex-grow-1">
@@ -86,7 +85,7 @@
                     @endif
 
                     @if ($errors->any())
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert" data-aos="zoom-in">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <i class="bi bi-exclamation-triangle-fill me-2"></i>
                             <strong>Oops!</strong> {{ $errors->first('email') }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -119,9 +118,6 @@
                                     </div>
                                 @enderror
                             </div>
-                            <small class="text-muted">
-                                <i class="bi bi-info-circle me-1"></i>Pastikan email yang Anda masukkan terdaftar di sistem
-                            </small>
                         </div>
 
                         <!-- Submit Button -->
@@ -138,41 +134,19 @@
 
                         <!-- Action Links -->
                         <div class="action-links">
-                            <div class="action-card" data-aos="fade-up" data-aos-delay="100">
+                            <div class="action-card">
                                 <div class="action-icon bg-primary-light">
                                     <i class="bi bi-box-arrow-in-right text-primary"></i>
                                 </div>
                                 <div class="action-content">
                                     <h6 class="fw-bold mb-1">Sudah Punya Akun?</h6>
-                                    <p class="text-muted small mb-2">Kembali ke halaman login</p>
-                                    <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm">
+                                    <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm mt-1">
                                         <i class="bi bi-arrow-left me-2"></i>Login Sekarang
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="action-card" data-aos="fade-up" data-aos-delay="200">
-                                <div class="action-icon bg-success-light">
-                                    <i class="bi bi-person-plus text-success"></i>
-                                </div>
-                                <div class="action-content">
-                                    <h6 class="fw-bold mb-1">Belum Punya Akun?</h6>
-                                    <p class="text-muted small mb-2">Daftar dan mulai cari kos impian</p>
-                                    <a href="{{ route('register') }}" class="btn btn-outline-success btn-sm">
-                                        <i class="bi bi-arrow-right me-2"></i>Daftar Sekarang
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </form>
-
-                    <!-- Help Section -->
-                    <div class="help-section mt-4" data-aos="fade-up">
-                        <div class="help-content">
-                            <i class="bi bi-question-circle-fill me-2"></i>
-                            <span>Butuh bantuan? <a href="#" class="text-primary fw-semibold">Hubungi Support</a></span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

@@ -4,25 +4,14 @@
 <div class="reset-password-container">
     <div class="container py-5">
         <div class="row justify-content-center align-items-center min-vh-100">
-            <!-- Left Side - Security Info -->
             <div class="col-lg-6 d-none d-lg-block" data-aos="fade-right">
                 <div class="reset-info">
                     <div class="illustration-wrapper">
                         <div class="shield-container">
-                            <div class="shield-bg">
-                                <i class="bi bi-shield-lock-fill"></i>
-                            </div>
-                            <div class="check-mark">
-                                <i class="bi bi-check-lg"></i>
-                            </div>
-                        </div>
-                        <div class="security-rings">
-                            <div class="ring ring-1"></div>
-                            <div class="ring ring-2"></div>
-                            <div class="ring ring-3"></div>
+                            <div class="shield-bg"><i class="bi bi-shield-lock-fill"></i></div>
+                            <div class="check-mark"><i class="bi bi-check-lg"></i></div>
                         </div>
                     </div>
-
                     <h1 class="display-4 fw-bold text-midnight mb-3 mt-5">Buat Password Baru</h1>
                     <p class="lead text-muted mb-4">Pastikan password baru Anda kuat dan aman untuk melindungi akun</p>
 
@@ -78,49 +67,43 @@
             <div class="col-lg-5 col-md-8" data-aos="fade-left">
                 <div class="reset-card">
                     <div class="text-center mb-4">
-                        <div class="reset-icon mb-3">
-                            <i class="bi bi-key-fill"></i>
-                        </div>
+                        <div class="reset-icon mb-3"><i class="bi bi-key-fill"></i></div>
                         <h2 class="fw-bold text-midnight mb-2">Reset Password</h2>
-                        <p class="text-muted">Buat password baru yang kuat dan mudah diingat</p>
                     </div>
 
                     @if ($errors->any())
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert" data-aos="zoom-in">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                            <strong>Oops!</strong> Ada kesalahan dalam pengisian form.
+                            <strong>Oops!</strong> {{ $errors->first() }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     @endif
 
-                    <form  class="reset-form">
-                        <input type="hidden" name="token" value="">
+                    <form method="POST" action="{{ route('password.store') }}" class="reset-form">
+                        @csrf
 
-                        <!-- Email Address (Read Only) -->
+                        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+
                         <div class="form-group mb-3">
                             <label for="email" class="form-label fw-semibold">
                                 <i class="bi bi-envelope-fill me-2 text-primary"></i>Email
                             </label>
                             <div class="input-wrapper">
+                                {{ old('email', $request->email) }}
                                 <input id="email"
                                        type="email"
                                        name="email"
                                        class="form-control form-control-lg @error('email') is-invalid @enderror"
-                                       value=""
+                                       value="{{ old('email', $request->email) }}"
                                        required
                                        readonly>
                                 <div class="input-icon">
                                     <i class="bi bi-lock-fill"></i>
                                 </div>
                                 @error('email')
-                                    <div class="invalid-feedback">
-                                        <i class="bi bi-exclamation-circle me-1"></i>
-                                    </div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <small class="text-muted">
-                                <i class="bi bi-info-circle me-1"></i>Email tidak dapat diubah
-                            </small>
                         </div>
 
                         <!-- New Password -->
@@ -134,17 +117,15 @@
                                        name="password"
                                        class="form-control form-control-lg @error('password') is-invalid @enderror"
                                        placeholder="Minimal 8 karakter"
-                                       required>
+                                       required
+                                       autocomplete="new-password">
                                 <button class="password-toggle" type="button" data-target="password">
                                     <i class="bi bi-eye-fill"></i>
                                 </button>
                                 @error('password')
-                                    <div class="invalid-feedback">
-                                        <i class="bi bi-exclamation-circle me-1"></i>{{ $message }}
-                                    </div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
                             <!-- Password Strength Meter -->
                             <div class="password-strength mt-2">
                                 <div class="strength-bar">
@@ -165,39 +146,12 @@
                                        name="password_confirmation"
                                        class="form-control form-control-lg"
                                        placeholder="Ketik ulang password baru"
-                                       required>
+                                       required
+                                       autocomplete="new-password">
                                 <button class="password-toggle" type="button" data-target="password_confirmation">
                                     <i class="bi bi-eye-fill"></i>
                                 </button>
                             </div>
-                            <small class="text-muted">
-                                <i class="bi bi-info-circle me-1"></i>Pastikan password sama dengan yang di atas
-                            </small>
-                        </div>
-
-                        <!-- Password Requirements -->
-                        <div class="requirements-box mb-4">
-                            <h6 class="fw-bold mb-2 small">
-                                <i class="bi bi-list-check me-2"></i>Password harus memenuhi:
-                            </h6>
-                            <ul class="requirements-list">
-                                <li id="req-length" class="requirement">
-                                    <i class="bi bi-circle"></i>
-                                    <span>Minimal 8 karakter</span>
-                                </li>
-                                <li id="req-uppercase" class="requirement">
-                                    <i class="bi bi-circle"></i>
-                                    <span>Mengandung huruf besar (A-Z)</span>
-                                </li>
-                                <li id="req-lowercase" class="requirement">
-                                    <i class="bi bi-circle"></i>
-                                    <span>Mengandung huruf kecil (a-z)</span>
-                                </li>
-                                <li id="req-number" class="requirement">
-                                    <i class="bi bi-circle"></i>
-                                    <span>Mengandung angka (0-9)</span>
-                                </li>
-                            </ul>
                         </div>
 
                         <!-- Submit Button -->
@@ -205,26 +159,6 @@
                             <button type="submit" class="btn btn-primary btn-lg btn-reset">
                                 <i class="bi bi-shield-check me-2"></i>Reset Password
                             </button>
-                        </div>
-
-                        <!-- Divider -->
-                        <div class="divider">
-                            <span>atau</span>
-                        </div>
-
-                        <!-- Action Links -->
-                        <div class="action-links">
-                            <a href="{{ route('login') }}" class="action-link link-primary">
-                                <i class="bi bi-box-arrow-in-right me-2"></i>
-                                <span>Kembali ke Login</span>
-                                <i class="bi bi-arrow-right ms-auto"></i>
-                            </a>
-
-                            <a href="{{ route('register') }}" class="action-link link-success">
-                                <i class="bi bi-person-plus me-2"></i>
-                                <span>Belum punya akun? Daftar</span>
-                                <i class="bi bi-arrow-right ms-auto"></i>
-                            </a>
                         </div>
                     </form>
                 </div>

@@ -101,7 +101,7 @@
                 </div>
 
                 <div class="card-body px-4 pt-0">
-                    <div class="table-responsive">
+                    <div class="table-responsive table-scroll-mobile">
                         <table class="table table-hover mb-0">
                             <thead>
                                 <tr class="bg-light">

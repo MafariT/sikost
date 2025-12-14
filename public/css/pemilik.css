@@ -162,7 +162,6 @@ body {
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12) !important;
 }
 
-/* Table improvements */
 .table > :not(:first-child) {
     border-top: 2px solid var(--porcelain) !important;
 }
@@ -185,6 +184,22 @@ body {
 .table tbody td {
     padding: 1rem 1.5rem;
     vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+    .table-scroll-mobile {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table-scroll-mobile table {
+        min-width: 700px;
+    }
+
+    .table-scroll-mobile td,
+    .table-scroll-mobile th {
+        white-space: nowrap;
+    }
 }
 
 /* Badge styling */

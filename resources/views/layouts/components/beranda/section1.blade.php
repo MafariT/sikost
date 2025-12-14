@@ -5,19 +5,6 @@
                 <h1>Temukan Kos Impianmu dengan Mudah</h1>
                 <p>Platform terpercaya untuk mahasiswa mencari hunian nyaman, aman, dan terjangkau di seluruh Indonesia
                 </p>
-
-                <div class="search-box">
-                    <input type="text" class="form-control" placeholder="Cari lokasi kos...">
-                    <select class="form-select">
-                        <option>Semua Tipe</option>
-                        <option>Kos Putra</option>
-                        <option>Kos Putri</option>
-                        <option>Kos Campur</option>
-                    </select>
-                    <button class="btn btn-search">
-                        <i class="fas fa-search"></i> Cari
-                    </button>
-                </div>
             </div>
             <div class="col-lg-6 mt-5 mt-lg-0">
                 <div class="hero-image">
